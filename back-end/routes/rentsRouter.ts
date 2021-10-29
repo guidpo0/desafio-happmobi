@@ -1,15 +1,15 @@
-const rescue = require('express-rescue');
 const express = require('express');
-const DatesController = require('../controllers/DatesController');
-const ErrorController = require('../controllers/ErrorController');
-const validateDatesData = require('../validators/datesValidators');
+const rescue = require('express-rescue');
+const RentsController = require('../controllers/RentsController.ts');
+const ErrorController = require('../controllers/ErrorController.ts');
+const validateRentsData = require('../validators/rentsValidators.ts');
 
-const datesRouter = express.Router();
+const router = express.Router();
 
-datesRouter.post('/', rescue(validateDatesData), rescue(DatesController.create));
-datesRouter.get('/', rescue(DatesController.getAll));
-datesRouter.get('/:id', rescue(DatesController.getById));
+router.post('/', rescue(validateRentsData), rescue(RentsController.create));
+router.get('/', rescue(RentsController.getAll));
+router.get('/:id', rescue(RentsController.getById));
 
-datesRouter.use(ErrorController);
+router.use(ErrorController);
 
-module.exports = datesRouter;
+module.exports = router;
