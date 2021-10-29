@@ -4,12 +4,14 @@ const UsersController = require('../controllers/UsersController.ts');
 const ErrorController = require('../controllers/ErrorController.ts');
 const validateUsersData = require('../validators/usersValidators.ts');
 
-const districtsRouter = express.Router();
+const router = express.Router();
 
-districtsRouter.post('/', rescue(validateUsersData), rescue(UsersController.create));
-districtsRouter.get('/', rescue(UsersController.getAll));
-districtsRouter.get('/:id', rescue(UsersController.getById));
+router.post('/', rescue(validateUsersData), rescue(UsersController.create));
+router.get('/', rescue(UsersController.getAll));
+router.get('/:id', rescue(UsersController.getById));
+router.delete('/:id', rescue(UsersController.remove));
+router.put('/:id', rescue(UsersController.update));
 
-districtsRouter.use(ErrorController);
+router.use(ErrorController);
 
-module.exports = districtsRouter;
+module.exports = router;

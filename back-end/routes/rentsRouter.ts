@@ -9,6 +9,8 @@ const router = express.Router();
 router.post('/', rescue(validateRentsData), rescue(RentsController.create));
 router.get('/', rescue(RentsController.getAll));
 router.get('/:id', rescue(RentsController.getById));
+router.delete('/:id', rescue(RentsController.remove));
+router.put('/:id', rescue(RentsController.update));
 
 router.use(ErrorController);
 
