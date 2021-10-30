@@ -1,38 +1,42 @@
-const ClimatesModel = require('../models/ClimatesModel');
-const DatesModel = require('../models/DatesModel');
+import CarsModel from '../models/CarsModel';
 
-const create = async ({ climateHour, climateRain, dateId }) => {
-  const dates = await DatesModel.getAll();
-  const existingDate = dates.some((date) => date.date_id === dateId);
-
-  if (!existingDate) {
-    return {
-      err: {
-        code: 'invalid_data',
-        message: 'Date ID not found',
-      },
-    };
+class CarsService {
+  public async create({ climateHour, climateRain, dateId }): Promise<> {
+    return CarsModel.create({ climateHour, climateRain, dateId });
   }
-  return ClimatesModel.create({ climateHour, climateRain, dateId });
-};
 
-const getAll = async () => ClimatesModel.getAll();
-
-const getById = async (id) => {
-  const climate = await ClimatesModel.getById(id);
-  if (!climate) {
-    return {
-      err: {
-        code: 'invalid_data',
-        message: 'Climate not found',
-      },
-    };
+  public async getAll() {
+    return CarsModel.getAll();
   }
-  return climate;
-};
 
-module.exports = {
-  create,
-  getAll,
-  getById,
-};
+  public async getById(id) {
+    const car = await CarsModel.getById(id);
+    if (!car) {
+      return {
+        err: {
+          code: 'invalid_data',
+          message: 'Car not found',
+        },
+      };
+    }
+    return car;
+  }
+
+  public async remove({ climateHour, climateRain, dateId }): Promise<> {
+    return CarsModel.create({ climateHour, climateRain, dateId });
+  }
+
+  public async update({ climateHour, climateRain, dateId }): Promise<> {
+    return CarsModel.create({ climateHour, climateRain, dateId });
+  }
+
+  constructor() {
+    this.create = this.create.bind(this);
+    this.getAll = this.getAll.bind(this);
+    this.getById = this.getById.bind(this);
+    this.remove = this.remove.bind(this);
+    this.update = this.update.bind(this);
+  }
+}
+
+export default new CarsService();

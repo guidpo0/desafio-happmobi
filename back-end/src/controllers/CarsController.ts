@@ -1,9 +1,11 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import CarsService from '../services/CarsService';
 import { CREATED_STATUS, OK_STATUS } from '../helpers/HTTPCodes';
 
 class CarsController {
-  public async create(req: Request, res: Response, next: any): Promise<Response> {
+  public async create(
+    req: Request, res: Response, next: NextFunction,
+  ): Promise<Response> {
     const { carModel, costHour } = req.body;
     const { carId, err } = await CarsService.create(
       { carModel, costHour },
@@ -14,12 +16,16 @@ class CarsController {
     });
   }
 
-  public async getAll(req: Request, res: Response): Promise<Response> {
+  public async getAll(
+    req: Request, res: Response,
+  ): Promise<Response> {
     const cars = await CarsService.getAll();
     return res.status(OK_STATUS).json({ cars });
   }
 
-  public async getById(req, res, next): Promise<Response> {
+  public async getById(
+    req: Request, res: Response, next: NextFunction,
+  ): Promise<Response> {
     const { id } = req.params;
     const car = await CarsService.getById(id);
     const { err } = car;
@@ -27,7 +33,9 @@ class CarsController {
     return res.status(OK_STATUS).json(car);
   }
 
-  public async remove(req, res, next): Promise<Response> {
+  public async remove(
+    req: Request, res: Response, next: NextFunction,
+  ): Promise<Response> {
     const { id } = req.params;
     const carRemoved = await CarsService.remove(id);
     const { err } = carRemoved;
@@ -35,7 +43,9 @@ class CarsController {
     return res.status(OK_STATUS).json(carRemoved);
   }
 
-  public async update(req, res, next): Promise<Response> {
+  public async update(
+    req: Request, res: Response, next: NextFunction,
+  ): Promise<Response> {
     const { carModel, costHour, status } = req.body;
     const { id } = req.params;
     const { carId, err } = await CarsService.update({
@@ -45,6 +55,14 @@ class CarsController {
     return res.status(OK_STATUS).json({
       carId, carModel, costHour, status,
     });
+  }
+
+  public constructor() {
+    this.create = this.create.bind(this);
+    this.getAll = this.getAll.bind(this);
+    this.getById = this.getById.bind(this);
+    this.remove = this.remove.bind(this);
+    this.update = this.update.bind(this);
   }
 }
 
