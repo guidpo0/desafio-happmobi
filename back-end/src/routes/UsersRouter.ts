@@ -2,7 +2,7 @@ import express from 'express';
 import rescue from 'express-rescue';
 import UsersController from '../controllers/UsersController';
 import ErrorController from '../controllers/ErrorController';
-import ValidateUsersData from '../validators/usersValidators';
+import validateUsersData from '../validators/usersValidators';
 
 class UsersRouter {
   public router: express.Router;
@@ -14,7 +14,7 @@ class UsersRouter {
   }
 
   private routes(): void {
-    this.router.post('/', rescue(ValidateUsersData), rescue(UsersController.create));
+    this.router.post('/', rescue(validateUsersData), rescue(UsersController.create));
     this.router.get('/', rescue(UsersController.getAll));
     this.router.get('/:id', rescue(UsersController.getById));
     this.router.delete('/:id', rescue(UsersController.remove));

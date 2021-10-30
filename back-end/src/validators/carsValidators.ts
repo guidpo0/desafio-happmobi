@@ -1,12 +1,13 @@
-const Joi = require('joi');
+import { Request, Response, NextFunction } from 'express';
+import Joi from 'joi';
 
-module.exports = (req, _res, next) => {
+export default function validateCarsData(
+  req: Request, _res: Response, next: NextFunction,
+): void {
   const { error } = Joi.object({
-    climateHour: Joi.number().integer().min(0).max(23)
-      .required(),
-    climateRain: Joi.number().min(0).required(),
-    dateId: Joi.number().integer().min(1).required(),
+    carModel: Joi.string().required(),
+    costHour: Joi.number().min(0).required(),
   }).validate(req.body);
   if (error) return next(error);
   return next();
-};
+}

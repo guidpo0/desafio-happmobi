@@ -2,7 +2,7 @@ import express from 'express';
 import rescue from 'express-rescue';
 import RentsController from '../controllers/RentsController';
 import ErrorController from '../controllers/ErrorController';
-import ValidateRentsData from '../validators/rentsValidators';
+import validateRentsData from '../validators/rentsValidators';
 
 class RentsRouter {
   public router: express.Router;
@@ -14,7 +14,7 @@ class RentsRouter {
   }
 
   private routes(): void {
-    this.router.post('/', rescue(ValidateRentsData), rescue(RentsController.create));
+    this.router.post('/', rescue(validateRentsData), rescue(RentsController.create));
     this.router.get('/', rescue(RentsController.getAll));
     this.router.get('/:id', rescue(RentsController.getById));
     this.router.delete('/:id', rescue(RentsController.remove));

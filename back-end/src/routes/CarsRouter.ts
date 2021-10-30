@@ -2,7 +2,7 @@ import express from 'express';
 import rescue from 'express-rescue';
 import CarsController from '../controllers/CarsController';
 import ErrorController from '../controllers/ErrorController';
-import ValidateCarsData from '../validators/carsValidators';
+import validateCarsData from '../validators/carsValidators';
 
 class RentsRouter {
   public router: express.Router;
@@ -14,7 +14,7 @@ class RentsRouter {
   }
 
   private routes(): void {
-    this.router.post('/', rescue(ValidateCarsData), rescue(CarsController.create));
+    this.router.post('/', rescue(validateCarsData), rescue(CarsController.create));
     this.router.get('/', rescue(CarsController.getAll));
     this.router.get('/:id', rescue(CarsController.getById));
     this.router.delete('/:id', rescue(CarsController.remove));

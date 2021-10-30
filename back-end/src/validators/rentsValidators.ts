@@ -1,10 +1,19 @@
-const Joi = require('joi');
+import { Request, Response, NextFunction } from 'express';
+import Joi from 'joi';
+import JoiDate from '@joi/date';
 
-module.exports = (req, _res, next) => {
+Joi.extend(JoiDate);
+
+export default function validateRentsData(
+  req: Request, _res: Response, next: NextFunction,
+): void {
   const { error } = Joi.object({
-    dateName: Joi.string().min(5).max(5).required(),
-    districtId: Joi.number().integer().min(1).required(),
+    carId: Joi.number().integer().min(1).required(),
+    userId: Joi.number().integer().min(1).required(),
+    rentStart: Joi.date().format('YYYY-MM-DD').required(),
+    rentEnd: Joi.date().format('YYYY-MM-DD').required(),
+    total: Joi.number().min(0).required(),
   }).validate(req.body);
   if (error) return next(error);
   return next();
-};
+}
