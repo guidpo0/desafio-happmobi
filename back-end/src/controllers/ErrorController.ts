@@ -1,8 +1,15 @@
+import { Request, Response, NextFunction } from 'express';
+import HttpException from '../exceptions/HttpException';
+import * as HTTPCodes from '../helpers/HTTPCodes';
+import { ResponseError } from '../helpers/interfaces';
+
 const {
   UNPROCESSABLE_ENTITY_STATUS, INTERNAL_SERVER_ERROR_STATUS,
-} = require('../helpers/HTTPCodes');
+} = HTTPCodes;
 
-module.exports = (err, _req, res, _next) => {
+export default function ErrorController(
+  err: HttpException, _req: Request, res: Response, _next: NextFunction,
+): Response<ResponseError> {
   if (err.isJoi) {
     const { message } = err.details[0];
     const error = { code: 'invalid_data', message };
@@ -13,4 +20,4 @@ module.exports = (err, _req, res, _next) => {
   }
   const serverError = { code: 'internal_error', message: 'Erro de servidor' };
   return res.status(INTERNAL_SERVER_ERROR_STATUS).json({ err: serverError });
-};
+}

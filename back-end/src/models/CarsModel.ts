@@ -1,63 +1,58 @@
 import mysqlConnection from '../connections/mysqlServer';
+import { BaseCar, Car } from '../helpers/interfaces';
 
 class CarsModel {
-  public async create({ dateName, districtId }) {
+  public async create({ carModel, costHour, rentStatus }: BaseCar): Promise<Car> {
     const [{ insertId }] = await mysqlConnection.execute(
-      'INSERT INTO heroku_5eb1b5a5878e473.Dates (date_name, district_id) VALUES (?,?)',
-      [dateName, districtId],
-    );
-    return { dateId: insertId };
-  }
-
-  public async getAll() {
-    const [dates] = await mysqlConnection.execute('SELECT * FROM heroku_5eb1b5a5878e473.Dates');
-    return dates.map(({
-      date_id: dateId,
-      date_name: dateName,
-      district_id: districtId,
-    }) => ({ dateId, dateName, districtId }));
-  }
-
-  public async getById(id) {
-    const [dates] = await mysqlConnection.execute(
-      'SELECT * FROM heroku_5eb1b5a5878e473.Dates WHERE date_id = ?', [id],
+      'INSERT INTO happmobi.Cars (car_model, cost_hour, rent_status) VALUES (?,?,?)',
+      [carModel, costHour, rentStatus],
     );
     return {
-      dateId: dates[0].date_id,
-      dateName: dates[0].date_name,
-      districtId: dates[0].district_id,
+      carId: insertId, carModel, costHour, rentStatus,
     };
   }
 
-  public async remove(id) {
-    const [dates] = await mysqlConnection.execute(
-      'SELECT * FROM heroku_5eb1b5a5878e473.Dates WHERE date_id = ?', [id],
-    );
-    return {
-      dateId: dates[0].date_id,
-      dateName: dates[0].date_name,
-      districtId: dates[0].district_id,
-    };
-  }
+  // public async getAll() {
+  //   const [dates] = await mysqlConnection.execute('SELECT * FROM heroku_5eb1b5a5878e473.Dates');
+  //   return dates.map(({
+  //     date_id: dateId,
+  //     date_name: dateName,
+  //     district_id: districtId,
+  //   }) => ({ dateId, dateName, districtId }));
+  // }
 
-  public async update(id) {
-    const [dates] = await mysqlConnection.execute(
-      'SELECT * FROM heroku_5eb1b5a5878e473.Dates WHERE date_id = ?', [id],
-    );
-    return {
-      dateId: dates[0].date_id,
-      dateName: dates[0].date_name,
-      districtId: dates[0].district_id,
-    };
-  }
+  // public async getById(id) {
+  //   const [dates] = await mysqlConnection.execute(
+  //     'SELECT * FROM heroku_5eb1b5a5878e473.Dates WHERE date_id = ?', [id],
+  //   );
+  //   return {
+  //     dateId: dates[0].date_id,
+  //     dateName: dates[0].date_name,
+  //     districtId: dates[0].district_id,
+  //   };
+  // }
 
-  constructor() {
-    this.create = this.create.bind(this);
-    this.getAll = this.getAll.bind(this);
-    this.getById = this.getById.bind(this);
-    this.remove = this.remove.bind(this);
-    this.update = this.update.bind(this);
-  }
+  // public async remove(id) {
+  //   const [dates] = await mysqlConnection.execute(
+  //     'SELECT * FROM heroku_5eb1b5a5878e473.Dates WHERE date_id = ?', [id],
+  //   );
+  //   return {
+  //     dateId: dates[0].date_id,
+  //     dateName: dates[0].date_name,
+  //     districtId: dates[0].district_id,
+  //   };
+  // }
+
+  // public async update(id) {
+  //   const [dates] = await mysqlConnection.execute(
+  //     'SELECT * FROM heroku_5eb1b5a5878e473.Dates WHERE date_id = ?', [id],
+  //   );
+  //   return {
+  //     dateId: dates[0].date_id,
+  //     dateName: dates[0].date_name,
+  //     districtId: dates[0].district_id,
+  //   };
+  // }
 }
 
 export default new CarsModel();
