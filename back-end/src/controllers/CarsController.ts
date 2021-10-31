@@ -5,13 +5,12 @@ import { BaseCar } from '../helpers/interfaces';
 
 class CarsController {
   async create(
-    req: Request, res: Response, next: NextFunction,
+    req: Request, res: Response,
   ): Promise<Response | void> {
     const { carModel, costHour, rentStatus }: BaseCar = req.body;
     const car = await CarsService.create(
       { carModel, costHour, rentStatus },
     );
-    if (car.err) return next(car.err);
     return res.status(CREATED_STATUS).json(car);
   }
 
