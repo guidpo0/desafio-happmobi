@@ -1,42 +1,47 @@
-// import UsersModel from '../models/UsersModel';
+import UsersModel from '../models/UsersModel';
+import { BaseUser, User, ResponseError } from '../helpers/interfaces';
+import { USER_NOT_FOUND_ERROR } from '../helpers/errorsCodes';
 
-// class UsersService {
-//   public async create({ climateHour, climateRain, dateId }): Promise<> {
-//     return CarsModel.create({ climateHour, climateRain, dateId });
-//   }
+class UsersService {
+  async create({
+    userEmail, userPassword, userRole, firstName, lastName, phone, street, city, zip,
+  }: BaseUser): Promise<User> {
+    return UsersModel.create({
+      userEmail, userPassword, userRole, firstName, lastName, phone, street, city, zip,
+    });
+  }
 
-//   public async getAll() {
-//     return CarsModel.getAll();
-//   }
+  async getAll(): Promise<User[]> {
+    return UsersModel.getAll();
+  }
 
-//   public async getById(id) {
-//     const car = await CarsModel.getById(id);
-//     if (!car) {
-//       return {
-//         err: {
-//           code: 'invalid_data',
-//           message: 'Car not found',
-//         },
-//       };
-//     }
-//     return car;
-//   }
+  async getById(userId: number): Promise<User | { err: ResponseError }> {
+    const user = await UsersModel.getById(userId);
+    if (!user) {
+      return USER_NOT_FOUND_ERROR;
+    }
+    return user;
+  }
 
-//   public async remove({ climateHour, climateRain, dateId }): Promise<> {
-//     return CarsModel.create({ climateHour, climateRain, dateId });
-//   }
+  async remove(userId: number): Promise<User | { err: ResponseError }> {
+    const removedUser = await UsersModel.remove(userId);
+    if (!removedUser) {
+      return USER_NOT_FOUND_ERROR;
+    }
+    return removedUser;
+  }
 
-//   public async update({ climateHour, climateRain, dateId }): Promise<> {
-//     return CarsModel.create({ climateHour, climateRain, dateId });
-//   }
+  async update({
+    userId, userEmail, userPassword, userRole, firstName, lastName, phone, street, city, zip,
+  }: User): Promise<User | { err: ResponseError }> {
+    const updatedUser = await UsersModel.update({
+      userId, userEmail, userPassword, userRole, firstName, lastName, phone, street, city, zip,
+    });
+    if (!updatedUser) {
+      return USER_NOT_FOUND_ERROR;
+    }
+    return updatedUser;
+  }
+}
 
-//   constructor() {
-//     this.create = this.create.bind(this);
-//     this.getAll = this.getAll.bind(this);
-//     this.getById = this.getById.bind(this);
-//     this.remove = this.remove.bind(this);
-//     this.update = this.update.bind(this);
-//   }
-// }
-
-// export default new UsersService();
+export default new UsersService();
