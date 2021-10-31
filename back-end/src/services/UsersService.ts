@@ -15,7 +15,7 @@ class UsersService {
     return UsersModel.getAll();
   }
 
-  async getById(userId: number): Promise<User | ResponseError> {
+  async getById(userId: number): Promise<User | { err: ResponseError }> {
     const user = await UsersModel.getById(userId);
     if (!user) {
       return USER_NOT_FOUND_ERROR;
@@ -23,7 +23,7 @@ class UsersService {
     return user;
   }
 
-  async remove(userId: number): Promise<User | ResponseError> {
+  async remove(userId: number): Promise<User | { err: ResponseError }> {
     const removedUser = await UsersModel.remove(userId);
     if (!removedUser) {
       return USER_NOT_FOUND_ERROR;
@@ -33,7 +33,7 @@ class UsersService {
 
   async update({
     userId, userEmail, userPassword, userRole, firstName, lastName, phone, street, city, zip,
-  }: User): Promise<User | ResponseError> {
+  }: User): Promise<User | { err: ResponseError }> {
     const updatedUser = await UsersModel.update({
       userId, userEmail, userPassword, userRole, firstName, lastName, phone, street, city, zip,
     });
