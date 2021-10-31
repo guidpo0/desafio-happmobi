@@ -2,7 +2,7 @@ import mysqlConnection from '../connections/mysqlServer';
 import { BaseCar, Car } from '../helpers/interfaces';
 
 class CarsModel {
-  public async create({ carModel, costHour, rentStatus }: BaseCar): Promise<Car> {
+  async create({ carModel, costHour, rentStatus }: BaseCar): Promise<Car> {
     const [{ insertId }] = await mysqlConnection.execute(
       'INSERT INTO happmobi.Cars (car_model, cost_hour, rent_status) VALUES (?,?,?)',
       [carModel, costHour, rentStatus],
@@ -12,47 +12,49 @@ class CarsModel {
     };
   }
 
-  // public async getAll() {
-  //   const [dates] = await mysqlConnection.execute('SELECT * FROM heroku_5eb1b5a5878e473.Dates');
-  //   return dates.map(({
-  //     date_id: dateId,
-  //     date_name: dateName,
-  //     district_id: districtId,
-  //   }) => ({ dateId, dateName, districtId }));
-  // }
+  async getAll(): Promise<Car[]> {
+    const [cars] = await mysqlConnection.execute(
+      'SELECT * FROM happmobi.Cars',
+    );
+    return cars.map(({
+      car_id: carId,
+      car_model: carModel,
+      cost_hour: costHour,
+      rent_status: rentStatus,
+    }) => ({
+      carId, carModel, costHour, rentStatus,
+    }));
+  }
 
-  // public async getById(id) {
-  //   const [dates] = await mysqlConnection.execute(
-  //     'SELECT * FROM heroku_5eb1b5a5878e473.Dates WHERE date_id = ?', [id],
-  //   );
-  //   return {
-  //     dateId: dates[0].date_id,
-  //     dateName: dates[0].date_name,
-  //     districtId: dates[0].district_id,
-  //   };
-  // }
+  async getById(id: number): Promise<Car> {
+    const [car] = await mysqlConnection.execute(
+      'SELECT * FROM happmobi.Cars WHERE car_id = ?', [id],
+    );
+    return {
+      carId: car[0].car_id,
+      carModel: car[0].car_model,
+      costHour: car[0].cost_hour,
+      rentStatus: car[0].rent_status,
+    };
+  }
 
-  // public async remove(id) {
-  //   const [dates] = await mysqlConnection.execute(
-  //     'SELECT * FROM heroku_5eb1b5a5878e473.Dates WHERE date_id = ?', [id],
-  //   );
-  //   return {
-  //     dateId: dates[0].date_id,
-  //     dateName: dates[0].date_name,
-  //     districtId: dates[0].district_id,
-  //   };
-  // }
+  async remove(id: number): Promise<Car> {
+    const car = await this.getById(id);
+    await mysqlConnection.execute(
+      'DELETE FROM happmobi.Cars WHERE car_id = ?', [id],
+    );
+    return car;
+  }
 
-  // public async update(id) {
-  //   const [dates] = await mysqlConnection.execute(
-  //     'SELECT * FROM heroku_5eb1b5a5878e473.Dates WHERE date_id = ?', [id],
-  //   );
-  //   return {
-  //     dateId: dates[0].date_id,
-  //     dateName: dates[0].date_name,
-  //     districtId: dates[0].district_id,
-  //   };
-  // }
+  public async update({
+    carId, carModel, costHour, rentStatus,
+  }: Car): Promise<Car> {
+    await mysqlConnection.execute(
+      'UPDATE happmobi.Cars SET car_model = ?, cost_hour = ?, rent_status = ? WHERE car_id = ?', [carModel, costHour, rentStatus, carId],
+    );
+    const car = await this.getById(carId);
+    return car;
+  }
 }
 
 export default new CarsModel();
