@@ -1,35 +1,43 @@
 import CarsModel from '../models/CarsModel';
-import { BaseCar, Car } from '../helpers/interfaces';
+import { BaseCar, Car, ResponseError } from '../helpers/interfaces';
+import { CAR_NOT_FOUND_ERROR } from '../helpers/errorsCodes';
 
 class CarsService {
   async create({ carModel, costHour, rentStatus }: BaseCar): Promise<Car> {
     return CarsModel.create({ carModel, costHour, rentStatus });
   }
 
-  // public async getAll() {
-  //   return CarsModel.getAll();
-  // }
+  async getAll(): Promise<Car[]> {
+    return CarsModel.getAll();
+  }
 
-  // public async getById(id) {
-  //   const car = await CarsModel.getById(id);
-  //   if (!car) {
-  //     return {
-  //       err: {
-  //         code: 'invalid_data',
-  //         message: 'Car not found',
-  //       },
-  //     };
-  //   }
-  //   return car;
-  // }
+  async getById(carId: number): Promise<Car | { err: ResponseError }> {
+    const car = await CarsModel.getById(carId);
+    if (!car) {
+      return CAR_NOT_FOUND_ERROR;
+    }
+    return car;
+  }
 
-  // public async remove({ climateHour, climateRain, dateId }): Promise<> {
-  //   return CarsModel.create({ climateHour, climateRain, dateId });
-  // }
+  async remove(carId: number): Promise<Car | { err: ResponseError }> {
+    const removedCar = await CarsModel.remove(carId);
+    if (!removedCar) {
+      return CAR_NOT_FOUND_ERROR;
+    }
+    return removedCar;
+  }
 
-  // public async update({ climateHour, climateRain, dateId }): Promise<> {
-  //   return CarsModel.create({ climateHour, climateRain, dateId });
-  // }
+  async update({
+    carId, carModel, costHour, rentStatus,
+  }: Car): Promise<Car | { err: ResponseError }> {
+    const updatedCar = await CarsModel.update({
+      carId, carModel, costHour, rentStatus,
+    });
+    if (!updatedCar) {
+      return CAR_NOT_FOUND_ERROR;
+    }
+    return updatedCar;
+  }
 }
 
 export default new CarsService();
