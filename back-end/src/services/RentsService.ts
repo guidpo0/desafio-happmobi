@@ -1,42 +1,47 @@
-// import RentsModel from '../models/RentsModel';
+import RentsModel from '../models/RentsModel';
+import { BaseRent, Rent, ResponseError } from '../helpers/interfaces';
+import { RENT_NOT_FOUND_ERROR } from '../helpers/errorsCodes';
 
-// class RentsService {
-//   public async create({ climateHour, climateRain, dateId }): Promise<> {
-//     return CarsModel.create({ climateHour, climateRain, dateId });
-//   }
+class RentsService {
+  async create({
+    carId, userId, rentStart, rentEnd, total,
+  }: BaseRent): Promise<Rent> {
+    return RentsModel.create({
+      carId, userId, rentStart, rentEnd, total,
+    });
+  }
 
-//   public async getAll() {
-//     return CarsModel.getAll();
-//   }
+  async getAll(): Promise<Rent[]> {
+    return RentsModel.getAll();
+  }
 
-//   public async getById(id) {
-//     const car = await CarsModel.getById(id);
-//     if (!car) {
-//       return {
-//         err: {
-//           code: 'invalid_data',
-//           message: 'Car not found',
-//         },
-//       };
-//     }
-//     return car;
-//   }
+  async getById(rentId: number): Promise<Rent | { err: ResponseError }> {
+    const rent = await RentsModel.getById(rentId);
+    if (!rent) {
+      return RENT_NOT_FOUND_ERROR;
+    }
+    return rent;
+  }
 
-//   public async remove({ climateHour, climateRain, dateId }): Promise<> {
-//     return CarsModel.create({ climateHour, climateRain, dateId });
-//   }
+  async remove(rentId: number): Promise<Rent | { err: ResponseError }> {
+    const removedRent = await RentsModel.remove(rentId);
+    if (!removedRent) {
+      return RENT_NOT_FOUND_ERROR;
+    }
+    return removedRent;
+  }
 
-//   public async update({ climateHour, climateRain, dateId }): Promise<> {
-//     return CarsModel.create({ climateHour, climateRain, dateId });
-//   }
+  async update({
+    rentId, carId, userId, rentStart, rentEnd, total,
+  }: Rent): Promise<Rent | { err: ResponseError }> {
+    const updatedRent = await RentsModel.update({
+      rentId, carId, userId, rentStart, rentEnd, total,
+    });
+    if (!updatedRent) {
+      return RENT_NOT_FOUND_ERROR;
+    }
+    return updatedRent;
+  }
+}
 
-//   constructor() {
-//     this.create = this.create.bind(this);
-//     this.getAll = this.getAll.bind(this);
-//     this.getById = this.getById.bind(this);
-//     this.remove = this.remove.bind(this);
-//     this.update = this.update.bind(this);
-//   }
-// }
-
-// export default new RentsService();
+export default new RentsService();

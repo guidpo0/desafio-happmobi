@@ -5,23 +5,16 @@ export const CAR_NOT_FOUND_ERROR = {
   },
 };
 
-export const INVALID_SALE_ERROR = {
-  err: {
-    code: 'invalid_data',
-    message: 'Wrong sale ID format',
-  },
-};
-
-export const NOT_FOUND_ERROR = {
+export const RENT_NOT_FOUND_ERROR = {
   err: {
     code: 'not_found',
-    message: 'Sale not found',
+    message: 'Rent not found',
   },
 };
 
-export const INVALID_QUANTITY_ERROR = {
+export const USER_NOT_FOUND_ERROR = {
   err: {
-    code: 'stock_problem',
-    message: 'Such amount is not permitted to sell',
+    code: 'not_found',
+    message: 'User not found',
   },
 };
