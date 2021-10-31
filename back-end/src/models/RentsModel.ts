@@ -1,63 +1,67 @@
-// import mysqlConnection from '../connections/mysqlServer';
+import mysqlConnection from '../connections/mysqlServer';
+import { BaseRent, Rent } from '../helpers/interfaces';
 
-// class RentsModel {
-//   public async create({ dateName, districtId }) {
-//     const [{ insertId }] = await mysqlConnection.execute(
-//       'INSERT INTO heroku_5eb1b5a5878e473.Dates (date_name, district_id) VALUES (?,?)',
-//       [dateName, districtId],
-//     );
-//     return { dateId: insertId };
-//   }
+class RentsModel {
+  async create({
+    carId, userId, rentStart, rentEnd, total,
+  }: BaseRent): Promise<Rent> {
+    const [{ insertId }] = await mysqlConnection.execute(
+      'INSERT INTO happmobi.Rents (car_id, user_id, rent_start, rent_end, total) VALUES (?,?,?,?,?)',
+      [carId, userId, rentStart, rentEnd, total],
+    );
+    return {
+      rentId: insertId, carId, userId, rentStart, rentEnd, total,
+    };
+  }
 
-//   public async getAll() {
-//     const [dates] = await mysqlConnection.execute('SELECT * FROM heroku_5eb1b5a5878e473.Dates');
-//     return dates.map(({
-//       date_id: dateId,
-//       date_name: dateName,
-//       district_id: districtId,
-//     }) => ({ dateId, dateName, districtId }));
-//   }
+  async getAll(): Promise<Rent[]> {
+    const [rents] = await mysqlConnection.execute(
+      'SELECT * FROM happmobi.Rents',
+    );
+    return rents.map(({
+      rent_id: rentId,
+      car_id: carId,
+      user_id: userId,
+      rent_start: rentStart,
+      rent_end: rentEnd,
+      total,
+    }) => ({
+      rentId, carId, userId, rentStart, rentEnd, total,
+    }));
+  }
 
-//   public async getById(id) {
-//     const [dates] = await mysqlConnection.execute(
-//       'SELECT * FROM heroku_5eb1b5a5878e473.Dates WHERE date_id = ?', [id],
-//     );
-//     return {
-//       dateId: dates[0].date_id,
-//       dateName: dates[0].date_name,
-//       districtId: dates[0].district_id,
-//     };
-//   }
+  async getById(id: number): Promise<Rent> {
+    const [rent] = await mysqlConnection.execute(
+      'SELECT * FROM happmobi.Rents WHERE rent_id = ?', [id],
+    );
+    return {
+      rentId: rent[0].rent_id,
+      carId: rent[0].car_id,
+      userId: rent[0].user_id,
+      rentStart: rent[0].rent_start,
+      rentEnd: rent[0].rent_end,
+      total: rent[0].total,
+    };
+  }
 
-//   public async remove(id) {
-//     const [dates] = await mysqlConnection.execute(
-//       'SELECT * FROM heroku_5eb1b5a5878e473.Dates WHERE date_id = ?', [id],
-//     );
-//     return {
-//       dateId: dates[0].date_id,
-//       dateName: dates[0].date_name,
-//       districtId: dates[0].district_id,
-//     };
-//   }
+  async remove(id: number): Promise<Rent> {
+    const rent = await this.getById(id);
+    await mysqlConnection.execute(
+      'DELETE FROM happmobi.Rents WHERE rent_id = ?', [id],
+    );
+    return rent;
+  }
 
-//   public async update(id) {
-//     const [dates] = await mysqlConnection.execute(
-//       'SELECT * FROM heroku_5eb1b5a5878e473.Dates WHERE date_id = ?', [id],
-//     );
-//     return {
-//       dateId: dates[0].date_id,
-//       dateName: dates[0].date_name,
-//       districtId: dates[0].district_id,
-//     };
-//   }
+  public async update({
+    rentId, carId, userId, rentStart, rentEnd, total,
+  }: Rent): Promise<Rent> {
+    const rent = await this.getById(rentId);
+    await mysqlConnection.execute(
+      'UPDATE happmobi.Rents SET car_id = ?, user_id = ?, rent_start = ?, rent_end = ?, total = ? WHERE rent_id = ?',
+      [carId, userId, rentStart, rentEnd, total, rentId],
+    );
+    return rent;
+  }
+}
 
-//   constructor() {
-//     this.create = this.create.bind(this);
-//     this.getAll = this.getAll.bind(this);
-//     this.getById = this.getById.bind(this);
-//     this.remove = this.remove.bind(this);
-//     this.update = this.update.bind(this);
-//   }
-// }
-
-// export default new RentsModel();
+export default new RentsModel();

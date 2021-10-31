@@ -13,3 +13,16 @@ export interface Car extends BaseCar {
   carId: number,
   err?: ResponseError,
 }
+
+export interface BaseRent {
+  carId: number,
+  userId: number,
+  rentStart: string,
+  rentEnd: string,
+  total: number,
+}
+
+export interface Rent extends BaseRent {
+  rentId: number,
+  err?: ResponseError,
+}
