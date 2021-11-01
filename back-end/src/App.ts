@@ -29,9 +29,9 @@ class App {
 
     this.app.use('/cars', CarsRouter);
 
-    // this.app.use('/rents', RentsRouter);
+    this.app.use('/rents', RentsRouter);
 
-    // this.app.use('/users', UsersRouter);
+    this.app.use('/users', UsersRouter);
   }
 }
 

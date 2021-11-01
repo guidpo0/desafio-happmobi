@@ -15,10 +15,10 @@ class RentsRouter {
 
   private routes(): void {
     this.router.post('/', rescue(validateCarsData), rescue(CarsController.create));
-    // this.router.get('/', rescue(CarsController.getAll));
-    // this.router.get('/:id', rescue(CarsController.getById));
-    // this.router.delete('/:id', rescue(CarsController.remove));
-    // this.router.put('/:id', rescue(CarsController.update));
+    this.router.get('/', rescue(CarsController.getAll));
+    this.router.get('/:id', rescue(CarsController.getById));
+    this.router.delete('/:id', rescue(CarsController.remove));
+    this.router.put('/:id', rescue(validateCarsData), rescue(CarsController.update));
   }
 
   private middlewares(): void {

@@ -1,13 +1,18 @@
 import mysqlConnection from '../connections/mysqlServer';
+import AddressModel from './AddressModel';
 import { BaseUser, User } from '../helpers/interfaces';
 
 class UsersModel {
   async create({
     userEmail, userPassword, userRole, firstName, lastName, phone, street, city, zip,
   }: BaseUser): Promise<User> {
+    let addressId = await AddressModel.getByZip(zip);
+    if (!addressId) {
+      addressId = await AddressModel.create({ street, city, zip });
+    }
     const [{ insertId }] = await mysqlConnection.execute(
-      'INSERT INTO happmobi.Users (user_email, user_password, user_role, first_name, last_name, phone, street, city, zip,) VALUES (?,?,?,?,?,?,?,?,?)',
-      [userEmail, userPassword, userRole, firstName, lastName, phone, street, city, zip],
+      'INSERT INTO happmobi.Users (user_email, user_password, user_role, first_name, last_name, phone, address_id) VALUES (?,?,?,?,?,?,?)',
+      [userEmail, userPassword, userRole, firstName, lastName, phone, addressId],
     );
     return {
       userId: insertId,
@@ -25,7 +30,7 @@ class UsersModel {
 
   async getAll(): Promise<User[]> {
     const [users] = await mysqlConnection.execute(
-      'SELECT * FROM happmobi.Users',
+      'SELECT * FROM happmobi.Users AS Users INNER JOIN happmobi.Address AS Address ON Users.address_id = Address.address_id',
     );
     return users.map(({
       user_id: userId,
@@ -43,10 +48,11 @@ class UsersModel {
     }));
   }
 
-  async getById(id: number): Promise<User> {
+  async getById(id: number): Promise<User | null> {
     const [user] = await mysqlConnection.execute(
-      'SELECT * FROM happmobi.Users WHERE user_id = ?', [id],
+      'SELECT * FROM happmobi.Users AS Users INNER JOIN happmobi.Address AS Address ON Users.address_id = Address.address_id WHERE user_id = ?', [id],
     );
+    if (!user[0]) return null;
     return {
       userId: user[0].user_id,
       userEmail: user[0].user_email,
@@ -69,14 +75,18 @@ class UsersModel {
     return user;
   }
 
-  public async update({
+  async update({
     userId, userEmail, userPassword, userRole, firstName, lastName, phone, street, city, zip,
-  }: User): Promise<User> {
-    const user = await this.getById(userId);
+  }: User): Promise<User | null> {
+    let addressId = await AddressModel.getByZip(zip);
+    if (!addressId) {
+      addressId = await AddressModel.create({ street, city, zip });
+    }
     await mysqlConnection.execute(
-      'UPDATE happmobi.Rents SET user_email = ?, user_password = ?, user_role = ?, first_name = ?, last_name = ?, phone = ?, street = ?, city = ?, zip = ? WHERE user_id = ?',
-      [userEmail, userPassword, userRole, firstName, lastName, phone, street, city, zip, userId],
+      'UPDATE happmobi.Users SET user_email = ?, user_password = ?, user_role = ?, first_name = ?, last_name = ?, phone = ?, address_id = ? WHERE user_id = ?',
+      [userEmail, userPassword, userRole, firstName, lastName, phone, addressId, userId],
     );
+    const user = await this.getById(userId);
     return user;
   }
 }

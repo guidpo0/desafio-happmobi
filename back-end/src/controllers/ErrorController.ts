@@ -17,6 +17,7 @@ export default function ErrorController(
       { err: INVALID_DATA_ERROR(message) },
     );
   }
+  console.log(err);
   if (err.code === 'not_found') {
     return res.status(UNPROCESSABLE_ENTITY_STATUS).json({ err });
   }

@@ -6,7 +6,7 @@ export interface ResponseError {
 export interface BaseCar {
   carModel: string,
   costHour: number,
-  rentStatus: string,
+  rentAvailable: boolean,
 }
 
 export interface Car extends BaseCar {
@@ -27,16 +27,19 @@ export interface Rent extends BaseRent {
   err?: ResponseError,
 }
 
-export interface BaseUser {
+export interface BaseAddress {
+  street: string,
+  city: string,
+  zip: string,
+}
+
+export interface BaseUser extends BaseAddress {
   userEmail: string,
   userPassword: string,
   userRole: string,
   firstName: string,
   lastName: string,
   phone: string,
-  street: string,
-  city: string,
-  zip: string,
 }
 
 export interface User extends BaseUser {

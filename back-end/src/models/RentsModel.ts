@@ -34,6 +34,7 @@ class RentsModel {
     const [rent] = await mysqlConnection.execute(
       'SELECT * FROM happmobi.Rents WHERE rent_id = ?', [id],
     );
+    if (!rent[0]) return null;
     return {
       rentId: rent[0].rent_id,
       carId: rent[0].car_id,
@@ -55,11 +56,11 @@ class RentsModel {
   public async update({
     rentId, carId, userId, rentStart, rentEnd, total,
   }: Rent): Promise<Rent> {
-    const rent = await this.getById(rentId);
     await mysqlConnection.execute(
       'UPDATE happmobi.Rents SET car_id = ?, user_id = ?, rent_start = ?, rent_end = ?, total = ? WHERE rent_id = ?',
       [carId, userId, rentStart, rentEnd, total, rentId],
     );
+    const rent = await this.getById(rentId);
     return rent;
   }
 }

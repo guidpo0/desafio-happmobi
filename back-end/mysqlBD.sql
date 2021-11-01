@@ -50,16 +50,16 @@ CREATE TABLE IF NOT EXISTS happmobi.Cars (
   car_id INT PRIMARY KEY AUTO_INCREMENT,
   car_model VARCHAR(50) NOT NULL,
   cost_hour FLOAT NOT NULL,
-  rent_status VARCHAR(50) NOT NULL
+  rent_available BOOLEAN NOT NULL
 );
 
-INSERT INTO happmobi.Cars(car_model, cost_hour, rent_status) VALUES
-  ('Mini Cooper Cabrio 2.0', 43.36, 'AVAILABLE'),
-  ('T-Cross 1.0 Turbo', 19.45, 'AVAILABLE'),
-  ('Renegade 1.8', 19.54, 'AVAILABLE'),
-  ('Virtus 1.0 Turbo', 17.78, 'AVAILABLE'),
-  ('Polo MSI 1.6', 13.45, 'AVAILABLE'),
-  ('HB20 1.6', 13.89, 'AVAILABLE');
+INSERT INTO happmobi.Cars(car_model, cost_hour, rent_available) VALUES
+  ('Mini Cooper Cabrio 2.0', 43.36, true),
+  ('T-Cross 1.0 Turbo', 19.45, true),
+  ('Renegade 1.8', 19.54, true),
+  ('Virtus 1.0 Turbo', 17.78, true),
+  ('Polo MSI 1.6', 13.45, true),
+  ('HB20 1.6', 13.89, true);
 
 CREATE TABLE IF NOT EXISTS happmobi.Rents (
   rent_id INT PRIMARY KEY AUTO_INCREMENT,

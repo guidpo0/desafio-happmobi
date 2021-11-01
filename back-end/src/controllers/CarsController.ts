@@ -7,9 +7,9 @@ class CarsController {
   async create(
     req: Request, res: Response,
   ): Promise<Response | void> {
-    const { carModel, costHour, rentStatus }: BaseCar = req.body;
+    const { carModel, costHour, rentAvailable }: BaseCar = req.body;
     const car = await CarsService.create(
-      { carModel, costHour, rentStatus },
+      { carModel, costHour, rentAvailable },
     );
     return res.status(CREATED_STATUS).json(car);
   }
@@ -42,10 +42,10 @@ class CarsController {
   async update(
     req: Request, res: Response, next: NextFunction,
   ): Promise<Response | void> {
-    const { carModel, costHour, rentStatus }: BaseCar = req.body;
+    const { carModel, costHour, rentAvailable }: BaseCar = req.body;
     const { id } = req.params;
     const carUpdated = await CarsService.update({
-      carId: Number(id), carModel, costHour, rentStatus,
+      carId: Number(id), carModel, costHour, rentAvailable,
     });
     if (carUpdated.err) return next(carUpdated.err);
     return res.status(OK_STATUS).json(carUpdated);

@@ -2,13 +2,13 @@ import mysqlConnection from '../connections/mysqlServer';
 import { BaseCar, Car } from '../helpers/interfaces';
 
 class CarsModel {
-  async create({ carModel, costHour, rentStatus }: BaseCar): Promise<Car> {
+  async create({ carModel, costHour, rentAvailable }: BaseCar): Promise<Car> {
     const [{ insertId }] = await mysqlConnection.execute(
-      'INSERT INTO happmobi.Cars (car_model, cost_hour, rent_status) VALUES (?,?,?)',
-      [carModel, costHour, rentStatus],
+      'INSERT INTO happmobi.Cars (car_model, cost_hour, rent_available) VALUES (?,?,?)',
+      [carModel, costHour, rentAvailable],
     );
     return {
-      carId: insertId, carModel, costHour, rentStatus,
+      carId: insertId, carModel, costHour, rentAvailable,
     };
   }
 
@@ -20,9 +20,9 @@ class CarsModel {
       car_id: carId,
       car_model: carModel,
       cost_hour: costHour,
-      rent_status: rentStatus,
+      rent_available: rentAvailable,
     }) => ({
-      carId, carModel, costHour, rentStatus,
+      carId, carModel, costHour, rentAvailable: rentAvailable === 1,
     }));
   }
 
@@ -30,11 +30,12 @@ class CarsModel {
     const [car] = await mysqlConnection.execute(
       'SELECT * FROM happmobi.Cars WHERE car_id = ?', [id],
     );
+    if (!car[0]) return null;
     return {
       carId: car[0].car_id,
       carModel: car[0].car_model,
       costHour: car[0].cost_hour,
-      rentStatus: car[0].rent_status,
+      rentAvailable: car[0].rent_available === 1,
     };
   }
 
@@ -46,11 +47,11 @@ class CarsModel {
     return car;
   }
 
-  public async update({
-    carId, carModel, costHour, rentStatus,
+  async update({
+    carId, carModel, costHour, rentAvailable,
   }: Car): Promise<Car> {
     await mysqlConnection.execute(
-      'UPDATE happmobi.Cars SET car_model = ?, cost_hour = ?, rent_status = ? WHERE car_id = ?', [carModel, costHour, rentStatus, carId],
+      'UPDATE happmobi.Cars SET car_model = ?, cost_hour = ?, rent_available = ? WHERE car_id = ?', [carModel, costHour, rentAvailable, carId],
     );
     const car = await this.getById(carId);
     return car;
