@@ -4,6 +4,7 @@ import cors from 'cors';
 import CarsRouter from './routes/CarsRouter';
 import RentsRouter from './routes/RentsRouter';
 import UsersRouter from './routes/UsersRouter';
+import LoginRouter from './routes/LoginRouter';
 
 dotenv.config({ path: '../.env' });
 
@@ -32,6 +33,8 @@ class App {
     this.app.use('/rents', RentsRouter);
 
     this.app.use('/users', UsersRouter);
+
+    this.app.use('/login', LoginRouter);
   }
 }
 

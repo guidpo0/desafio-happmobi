@@ -36,10 +36,10 @@ export interface BaseAddress {
 export interface BaseUser extends BaseAddress {
   userEmail: string,
   userPassword?: string,
-  userRole: string,
-  firstName: string,
-  lastName: string,
-  phone: string,
+  userRole?: string,
+  firstName?: string,
+  lastName?: string,
+  phone?: string,
 }
 
 export interface User extends BaseUser {

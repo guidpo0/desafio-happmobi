@@ -87,6 +87,26 @@ class UsersModel {
     const user = await this.getById(userId);
     return user;
   }
+
+  async getByUserEmail(userEmail: string): Promise<User | null> {
+    const [user] = await mysqlConnection.execute(
+      'SELECT * FROM happmobi.Users AS Users INNER JOIN happmobi.Address AS Address ON Users.address_id = Address.address_id WHERE user_email = ?',
+      [userEmail],
+    );
+    if (!user[0]) return null;
+    return {
+      userId: user[0].user_id,
+      userEmail: user[0].user_email,
+      userRole: user[0].user_role,
+      userPassword: user[0].user_password,
+      firstName: user[0].first_name,
+      lastName: user[0].last_name,
+      phone: user[0].phone,
+      street: user[0].street,
+      city: user[0].city,
+      zip: user[0].zip,
+    };
+  }
 }
 
 export default new UsersModel();

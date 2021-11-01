@@ -48,3 +48,17 @@ export const RENT_END_DATE_ERROR = {
     message: 'Rental end date cannot be less than now',
   },
 };
+
+export const LOGIN_ERROR = {
+  err: {
+    code: 'login_error',
+    message: 'User email or password incorrects',
+  },
+};
+
+export const INVALID_TOKEN_ERROR = {
+  err: {
+    code: 'invalid_token',
+    message: 'Invalid token or no token provided',
+  },
+};
