@@ -1,5 +1,6 @@
 import mysqlConnection from '../connections/mysqlServer';
 import { BaseRent, Rent } from '../helpers/interfaces';
+import CarsModel from './CarsModel';
 
 class RentsModel {
   private async deleteEventUpdateCarAvailable(
@@ -33,6 +34,7 @@ class RentsModel {
   async create({
     carId, userId, rentStart, rentEnd,
   }: BaseRent): Promise<Rent> {
+    await CarsModel.rentCar(carId);
     const total = await this.calculateTotal(carId, rentStart, rentEnd);
     const [{ insertId }] = await mysqlConnection.execute(
       'INSERT INTO happmobi.Rents (car_id, user_id, rent_start, rent_end, total) VALUES (?,?,?,?,?)',
@@ -91,6 +93,7 @@ class RentsModel {
     const { rentEnd: oldRentEnd } = await this.getById(rentId);
     const oldRentEndTime = new Date(oldRentEnd).getTime();
     if (Date.now() > oldRentEndTime) {
+      await CarsModel.rentCar(carId);
       await this.createOrUpdateEventUpdateCarAvailable(rentId, rentEnd, carId, 'CREATE');
     } else {
       await this.createOrUpdateEventUpdateCarAvailable(rentId, rentEnd, carId, 'ALTER');

@@ -3,7 +3,7 @@ import CarsModel from '../models/CarsModel';
 import UsersModel from '../models/UsersModel';
 import { BaseRent, Rent, ResponseError } from '../helpers/interfaces';
 import {
-  RENT_NOT_FOUND_ERROR, CAR_NOT_FOUND_ERROR, USER_NOT_FOUND_ERROR,
+  RENT_NOT_FOUND_ERROR, CAR_NOT_FOUND_ERROR, USER_NOT_FOUND_ERROR, CAR_NOT_AVAILABLE_ERROR,
 } from '../helpers/errorsCodes';
 
 class RentsService {
@@ -12,6 +12,7 @@ class RentsService {
   }: BaseRent): Promise<Rent | { err: ResponseError }> {
     const car = await CarsModel.getById(carId);
     if (!car) return CAR_NOT_FOUND_ERROR;
+    if (!car.rentAvailable) return CAR_NOT_AVAILABLE_ERROR;
     const user = await UsersModel.getById(userId);
     if (!user) return USER_NOT_FOUND_ERROR;
     return RentsModel.create({
@@ -44,6 +45,7 @@ class RentsService {
   }: Rent): Promise<Rent | { err: ResponseError }> {
     const car = await CarsModel.getById(carId);
     if (!car) return CAR_NOT_FOUND_ERROR;
+    if (!car.rentAvailable) return CAR_NOT_AVAILABLE_ERROR;
     const user = await UsersModel.getById(userId);
     if (!user) return USER_NOT_FOUND_ERROR;
     const updatedRent = await RentsModel.update({

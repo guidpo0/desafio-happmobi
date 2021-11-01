@@ -69,6 +69,12 @@ class CarsModel {
     const car = await this.getById(carId);
     return car;
   }
+
+  async rentCar(carId: number): Promise<void> {
+    await mysqlConnection.execute(
+      'UPDATE happmobi.Cars SET rent_available = ? WHERE car_id = ?', [false, carId],
+    );
+  }
 }
 
 export default new CarsModel();
