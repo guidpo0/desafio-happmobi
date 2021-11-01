@@ -8,14 +8,14 @@ import {
 
 class RentsService {
   async create({
-    carId, userId, rentStart, rentEnd, total,
+    carId, userId, rentStart, rentEnd,
   }: BaseRent): Promise<Rent | { err: ResponseError }> {
     const car = await CarsModel.getById(carId);
     if (!car) return CAR_NOT_FOUND_ERROR;
     const user = await UsersModel.getById(userId);
     if (!user) return USER_NOT_FOUND_ERROR;
     return RentsModel.create({
-      carId, userId, rentStart, rentEnd, total,
+      carId, userId, rentStart, rentEnd,
     });
   }
 

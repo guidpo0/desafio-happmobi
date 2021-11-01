@@ -2,9 +2,24 @@ import mysqlConnection from '../connections/mysqlServer';
 import { BaseRent, Rent } from '../helpers/interfaces';
 
 class RentsModel {
+  private async calculateTotal(
+    carId: number, rentStart: string, rentEnd: string,
+  ): Promise<number> {
+    const [result] = await mysqlConnection.execute(
+      'SELECT cost_hour FROM happmobi.Cars WHERE car_id = ?',
+      [carId],
+    );
+    const { cost_hour: costHour } = result[0];
+    const timeDifHour: number = (
+      (new Date(rentEnd).getTime() - new Date(rentStart).getTime()) / (1000 * 60 * 60)
+    );
+    return timeDifHour * costHour;
+  }
+
   async create({
-    carId, userId, rentStart, rentEnd, total,
+    carId, userId, rentStart, rentEnd,
   }: BaseRent): Promise<Rent> {
+    const total = await this.calculateTotal(carId, rentStart, rentEnd);
     const [{ insertId }] = await mysqlConnection.execute(
       'INSERT INTO happmobi.Rents (car_id, user_id, rent_start, rent_end, total) VALUES (?,?,?,?,?)',
       [carId, userId, rentStart, rentEnd, total],

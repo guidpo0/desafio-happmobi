@@ -35,7 +35,6 @@ class UsersModel {
     return users.map(({
       user_id: userId,
       user_email: userEmail,
-      user_password: userPassword,
       user_role: userRole,
       first_name: firstName,
       last_name: lastName,
@@ -44,7 +43,7 @@ class UsersModel {
       city,
       zip,
     }) => ({
-      userId, userEmail, userPassword, userRole, firstName, lastName, phone, street, city, zip,
+      userId, userEmail, userRole, firstName, lastName, phone, street, city, zip,
     }));
   }
 
@@ -56,7 +55,6 @@ class UsersModel {
     return {
       userId: user[0].user_id,
       userEmail: user[0].user_email,
-      userPassword: user[0].user_password,
       userRole: user[0].user_role,
       firstName: user[0].first_name,
       lastName: user[0].last_name,

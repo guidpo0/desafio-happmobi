@@ -12,7 +12,6 @@ export default function validateRentsData(
     userId: Joi.number().integer().min(1).required(),
     rentStart: Joi.date().required(),
     rentEnd: Joi.date().required(),
-    total: Joi.number().min(0).required(),
   }).validate(req.body);
   if (error) return next(error);
   return next();

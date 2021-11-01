@@ -8,11 +8,11 @@ class RentsController {
     req: Request, res: Response,
   ): Promise<Response | void> {
     const {
-      carId, userId, rentStart, rentEnd, total,
+      carId, userId, rentStart, rentEnd,
     }: BaseRent = req.body;
     const rent = await RentsService.create(
       {
-        carId, userId, rentStart, rentEnd, total,
+        carId, userId, rentStart, rentEnd,
       },
     );
     return res.status(CREATED_STATUS).json(rent);

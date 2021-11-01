@@ -19,7 +19,7 @@ export interface BaseRent {
   userId: number,
   rentStart: string,
   rentEnd: string,
-  total: number,
+  total?: number,
 }
 
 export interface Rent extends BaseRent {
@@ -35,7 +35,7 @@ export interface BaseAddress {
 
 export interface BaseUser extends BaseAddress {
   userEmail: string,
-  userPassword: string,
+  userPassword?: string,
   userRole: string,
   firstName: string,
   lastName: string,
