@@ -13,7 +13,6 @@ class RentsModel {
   private async createOrUpdateEventUpdateCarAvailable(
     rentId:number, rentEnd: string, carId: number, eventAction: string,
   ): Promise<void> {
-    console.log(rentId, rentEnd, carId, eventAction);
     const query = `${eventAction} EVENT update_car_available${rentId} ON SCHEDULE AT '${rentEnd}' DO UPDATE happmobi.Cars SET rent_available = ${true} WHERE car_id = ${carId}`;
     await mysqlConnection.query(query);
   }
