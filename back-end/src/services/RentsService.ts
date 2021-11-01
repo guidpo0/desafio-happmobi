@@ -3,13 +3,19 @@ import CarsModel from '../models/CarsModel';
 import UsersModel from '../models/UsersModel';
 import { BaseRent, Rent, ResponseError } from '../helpers/interfaces';
 import {
-  RENT_NOT_FOUND_ERROR, CAR_NOT_FOUND_ERROR, USER_NOT_FOUND_ERROR, CAR_NOT_AVAILABLE_ERROR,
+  RENT_NOT_FOUND_ERROR,
+  CAR_NOT_FOUND_ERROR,
+  USER_NOT_FOUND_ERROR,
+  CAR_NOT_AVAILABLE_ERROR,
+  RENT_END_DATE_ERROR,
 } from '../helpers/errorsCodes';
 
 class RentsService {
   async create({
     carId, userId, rentStart, rentEnd,
   }: BaseRent): Promise<Rent | { err: ResponseError }> {
+    const rentEndTime = new Date(rentEnd).getTime();
+    if (rentEndTime < Date.now()) return RENT_END_DATE_ERROR;
     const car = await CarsModel.getById(carId);
     if (!car) return CAR_NOT_FOUND_ERROR;
     if (!car.rentAvailable) return CAR_NOT_AVAILABLE_ERROR;
@@ -43,6 +49,8 @@ class RentsService {
   async update({
     rentId, carId, userId, rentStart, rentEnd,
   }: Rent): Promise<Rent | { err: ResponseError }> {
+    const rentEndTime = new Date(rentEnd).getTime();
+    if (rentEndTime < Date.now()) return RENT_END_DATE_ERROR;
     const car = await CarsModel.getById(carId);
     if (!car) return CAR_NOT_FOUND_ERROR;
     if (!car.rentAvailable) return CAR_NOT_AVAILABLE_ERROR;

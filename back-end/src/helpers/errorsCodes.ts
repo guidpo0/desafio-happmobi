@@ -41,3 +41,10 @@ export const CAR_NOT_AVAILABLE_ERROR = {
     message: 'Car not available',
   },
 };
+
+export const RENT_END_DATE_ERROR = {
+  err: {
+    code: 'rent_end_date',
+    message: 'Rental end date cannot be less than now',
+  },
+};

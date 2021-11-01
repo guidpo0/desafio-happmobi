@@ -17,8 +17,7 @@ export default function ErrorController(
       { err: INVALID_DATA_ERROR(message) },
     );
   }
-  console.log(err);
-  if (err.code === 'not_found') {
+  if (['rent_end_date', 'car_not_available', 'not_found'].includes(err.code)) {
     return res.status(UNPROCESSABLE_ENTITY_STATUS).json({ err });
   }
   return res.status(INTERNAL_SERVER_ERROR_STATUS).json({ err: INTERNAL_SERVER_ERROR });

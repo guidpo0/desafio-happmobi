@@ -70,9 +70,9 @@ class CarsModel {
     return car;
   }
 
-  async rentCar(carId: number): Promise<void> {
+  async updateRentAvailable(carId: number, status: boolean): Promise<void> {
     await mysqlConnection.execute(
-      'UPDATE happmobi.Cars SET rent_available = ? WHERE car_id = ?', [false, carId],
+      'UPDATE happmobi.Cars SET rent_available = ? WHERE car_id = ?', [status, carId],
     );
   }
 }

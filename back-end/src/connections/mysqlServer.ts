@@ -12,6 +12,7 @@ const mysqlConnection = mysql.createPool({
   user,
   database: 'happmobi',
   password,
+  timezone: '+3:00',
 });
 
 export default mysqlConnection;
