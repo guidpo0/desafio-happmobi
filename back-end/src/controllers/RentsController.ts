@@ -8,8 +8,9 @@ class RentsController {
     req: Request, res: Response,
   ): Promise<Response | void> {
     const {
-      carId, userId, rentStart, rentEnd,
+      carId, rentStart, rentEnd,
     }: BaseRent = req.body;
+    const { userId } = req.user;
     const rent = await RentsService.create(
       {
         carId, userId, rentStart, rentEnd,
@@ -47,8 +48,9 @@ class RentsController {
     req: Request, res: Response, next: NextFunction,
   ): Promise<Response | void> {
     const {
-      carId, userId, rentStart, rentEnd,
+      carId, rentStart, rentEnd,
     }: BaseRent = req.body;
+    const { userId } = req.user;
     const { id } = req.params;
     const rentUpdated = await RentsService.update({
       rentId: Number(id), carId, userId, rentStart, rentEnd,

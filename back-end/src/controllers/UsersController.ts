@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import UsersService from '../services/UsersService';
-import { CREATED_STATUS, OK_STATUS } from '../helpers/HTTPCodes';
+import { CREATED_STATUS, OK_STATUS, UNAUTHORIZED_STATUS } from '../helpers/HTTPCodes';
 import { BaseUser } from '../helpers/interfaces';
+import { USER_UNAUTHORIZED_ERROR } from '../helpers/errorsCodes';
 
 class UsersController {
   async create(
@@ -21,6 +22,8 @@ class UsersController {
   async getAll(
     req: Request, res: Response,
   ): Promise<Response> {
+    const { userRole } = req.user;
+    if (userRole !== 'admin') return res.status(UNAUTHORIZED_STATUS).json(USER_UNAUTHORIZED_ERROR);
     const users = await UsersService.getAll();
     return res.status(OK_STATUS).json({ users });
   }

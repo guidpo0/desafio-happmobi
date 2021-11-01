@@ -18,7 +18,6 @@ export default async function validateJWT(
   const decoded = jwt.verify(token, secret);
   const user = await UsersModel.getById(decoded.data.userId);
   if (!user) return res.status(UNAUTHORIZED_STATUS).json(INVALID_TOKEN_ERROR);
-  delete user.userPassword;
   req.user = user;
   return next();
 }

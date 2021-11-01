@@ -9,7 +9,6 @@ export default function validateRentsData(
 ): void {
   const { error } = Joi.object({
     carId: Joi.number().integer().min(1).required(),
-    userId: Joi.number().integer().min(1).required(),
     rentStart: Joi.date().required(),
     rentEnd: Joi.date().required(),
   }).validate(req.body);

@@ -62,3 +62,10 @@ export const INVALID_TOKEN_ERROR = {
     message: 'Invalid token or no token provided',
   },
 };
+
+export const USER_UNAUTHORIZED_ERROR = {
+  err: {
+    code: 'user_unauthorized',
+    message: 'User unauthorized',
+  },
+};

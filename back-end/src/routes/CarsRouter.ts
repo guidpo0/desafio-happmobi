@@ -3,6 +3,7 @@ import rescue from 'express-rescue';
 import CarsController from '../controllers/CarsController';
 import ErrorController from '../controllers/ErrorController';
 import validateCarsData from '../validators/carsValidators';
+import validateJWT from '../auth/validateJWT';
 
 class RentsRouter {
   public router: express.Router;
@@ -14,11 +15,15 @@ class RentsRouter {
   }
 
   private routes(): void {
-    this.router.post('/', rescue(validateCarsData), rescue(CarsController.create));
+    this.router.post(
+      '/', rescue(validateJWT), rescue(validateCarsData), rescue(CarsController.create),
+    );
     this.router.get('/', rescue(CarsController.getAll));
     this.router.get('/:id', rescue(CarsController.getById));
-    this.router.delete('/:id', rescue(CarsController.remove));
-    this.router.put('/:id', rescue(validateCarsData), rescue(CarsController.update));
+    this.router.delete('/:id', rescue(validateJWT), rescue(CarsController.remove));
+    this.router.put(
+      '/:id', rescue(validateJWT), rescue(validateCarsData), rescue(CarsController.update),
+    );
   }
 
   private middlewares(): void {
