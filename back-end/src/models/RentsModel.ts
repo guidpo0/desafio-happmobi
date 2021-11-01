@@ -2,6 +2,20 @@ import mysqlConnection from '../connections/mysqlServer';
 import { BaseRent, Rent } from '../helpers/interfaces';
 
 class RentsModel {
+  private async deleteEventUpdateCarAvailable(
+    rentId: number,
+  ): Promise<void> {
+    const query = `DROP EVENT update_car_available${rentId}`;
+    await mysqlConnection.query(query);
+  }
+
+  private async createOrUpdateEventUpdateCarAvailable(
+    rentId:number, rentEnd: string, carId: number, eventAction: string,
+  ): Promise<void> {
+    const query = `${eventAction} EVENT update_car_available${rentId} ON SCHEDULE AT '${rentEnd}' DO UPDATE happmobi.Cars SET rent_available = ${true} WHERE car_id = ${carId}`;
+    await mysqlConnection.query(query);
+  }
+
   private async calculateTotal(
     carId: number, rentStart: string, rentEnd: string,
   ): Promise<number> {
@@ -24,6 +38,7 @@ class RentsModel {
       'INSERT INTO happmobi.Rents (car_id, user_id, rent_start, rent_end, total) VALUES (?,?,?,?,?)',
       [carId, userId, rentStart, rentEnd, total],
     );
+    await this.createOrUpdateEventUpdateCarAvailable(insertId, rentEnd, carId, 'CREATE');
     return {
       rentId: insertId, carId, userId, rentStart, rentEnd, total,
     };
@@ -62,6 +77,7 @@ class RentsModel {
 
   async remove(id: number): Promise<Rent> {
     const rent = await this.getById(id);
+    await this.deleteEventUpdateCarAvailable(id);
     await mysqlConnection.execute(
       'DELETE FROM happmobi.Rents WHERE rent_id = ?', [id],
     );
@@ -72,6 +88,13 @@ class RentsModel {
     rentId, carId, userId, rentStart, rentEnd,
   }: Rent): Promise<Rent> {
     const total = await this.calculateTotal(carId, rentStart, rentEnd);
+    const { rentEnd: oldRentEnd } = await this.getById(rentId);
+    const oldRentEndTime = new Date(oldRentEnd).getTime();
+    if (Date.now() > oldRentEndTime) {
+      await this.createOrUpdateEventUpdateCarAvailable(rentId, rentEnd, carId, 'CREATE');
+    } else {
+      await this.createOrUpdateEventUpdateCarAvailable(rentId, rentEnd, carId, 'ALTER');
+    }
     await mysqlConnection.execute(
       'UPDATE happmobi.Rents SET car_id = ?, user_id = ?, rent_start = ?, rent_end = ?, total = ? WHERE rent_id = ?',
       [carId, userId, rentStart, rentEnd, total, rentId],
