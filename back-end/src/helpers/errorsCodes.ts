@@ -34,3 +34,10 @@ export const INVALID_DATA_ERROR = (message: string): { err: ResponseError } => (
     message,
   },
 });
+
+export const CAR_NOT_AVAILABLE_ERROR = {
+  err: {
+    code: 'car_not_available',
+    message: 'Car not available',
+  },
+};

@@ -84,7 +84,7 @@ class RentsModel {
     return rent;
   }
 
-  public async update({
+  async update({
     rentId, carId, userId, rentStart, rentEnd,
   }: Rent): Promise<Rent> {
     const total = await this.calculateTotal(carId, rentStart, rentEnd);
