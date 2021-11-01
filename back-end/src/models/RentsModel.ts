@@ -69,8 +69,9 @@ class RentsModel {
   }
 
   public async update({
-    rentId, carId, userId, rentStart, rentEnd, total,
+    rentId, carId, userId, rentStart, rentEnd,
   }: Rent): Promise<Rent> {
+    const total = await this.calculateTotal(carId, rentStart, rentEnd);
     await mysqlConnection.execute(
       'UPDATE happmobi.Rents SET car_id = ?, user_id = ?, rent_start = ?, rent_end = ?, total = ? WHERE rent_id = ?',
       [carId, userId, rentStart, rentEnd, total, rentId],

@@ -3,8 +3,8 @@ import { BaseCar, Car, ResponseError } from '../helpers/interfaces';
 import { CAR_NOT_FOUND_ERROR } from '../helpers/errorsCodes';
 
 class CarsService {
-  async create({ carModel, costHour, rentAvailable }: BaseCar): Promise<Car> {
-    return CarsModel.create({ carModel, costHour, rentAvailable });
+  async create({ carModel, costHour }: BaseCar): Promise<Car> {
+    return CarsModel.create({ carModel, costHour });
   }
 
   async getAll(): Promise<Car[]> {
@@ -28,10 +28,10 @@ class CarsService {
   }
 
   async update({
-    carId, carModel, costHour, rentAvailable,
+    carId, carModel, costHour,
   }: Car): Promise<Car | { err: ResponseError }> {
     const updatedCar = await CarsModel.update({
-      carId, carModel, costHour, rentAvailable,
+      carId, carModel, costHour,
     });
     if (!updatedCar) {
       return CAR_NOT_FOUND_ERROR;

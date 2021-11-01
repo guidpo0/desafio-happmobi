@@ -40,14 +40,14 @@ class RentsService {
   }
 
   async update({
-    rentId, carId, userId, rentStart, rentEnd, total,
+    rentId, carId, userId, rentStart, rentEnd,
   }: Rent): Promise<Rent | { err: ResponseError }> {
     const car = await CarsModel.getById(carId);
     if (!car) return CAR_NOT_FOUND_ERROR;
     const user = await UsersModel.getById(userId);
     if (!user) return USER_NOT_FOUND_ERROR;
     const updatedRent = await RentsModel.update({
-      rentId, carId, userId, rentStart, rentEnd, total,
+      rentId, carId, userId, rentStart, rentEnd,
     });
     if (!updatedRent) {
       return RENT_NOT_FOUND_ERROR;

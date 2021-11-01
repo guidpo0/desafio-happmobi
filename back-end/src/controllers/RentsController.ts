@@ -47,11 +47,11 @@ class RentsController {
     req: Request, res: Response, next: NextFunction,
   ): Promise<Response | void> {
     const {
-      carId, userId, rentStart, rentEnd, total,
+      carId, userId, rentStart, rentEnd,
     }: BaseRent = req.body;
     const { id } = req.params;
     const rentUpdated = await RentsService.update({
-      rentId: Number(id), carId, userId, rentStart, rentEnd, total,
+      rentId: Number(id), carId, userId, rentStart, rentEnd,
     });
     if (rentUpdated.err) return next(rentUpdated.err);
     return res.status(OK_STATUS).json(rentUpdated);

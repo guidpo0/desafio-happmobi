@@ -6,7 +6,7 @@ export interface ResponseError {
 export interface BaseCar {
   carModel: string,
   costHour: number,
-  rentAvailable: boolean,
+  rentAvailable?: boolean,
 }
 
 export interface Car extends BaseCar {

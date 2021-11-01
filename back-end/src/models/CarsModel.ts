@@ -1,8 +1,20 @@
 import mysqlConnection from '../connections/mysqlServer';
 import { BaseCar, Car } from '../helpers/interfaces';
+import RentsModel from './RentsModel';
 
 class CarsModel {
-  async create({ carModel, costHour, rentAvailable }: BaseCar): Promise<Car> {
+  private async isRentAvailable(carId: number): Promise<boolean> {
+    const rents = await RentsModel.getAll();
+    return rents.some(
+      (rent) => {
+        const rentEndMilisec: number = new Date(rent.rentEnd).getTime();
+        return rent.carId === carId && rentEndMilisec > Date.now();
+      },
+    );
+  }
+
+  async create({ carModel, costHour }: BaseCar): Promise<Car> {
+    const rentAvailable = true;
     const [{ insertId }] = await mysqlConnection.execute(
       'INSERT INTO happmobi.Cars (car_model, cost_hour, rent_available) VALUES (?,?,?)',
       [carModel, costHour, rentAvailable],
@@ -48,8 +60,9 @@ class CarsModel {
   }
 
   async update({
-    carId, carModel, costHour, rentAvailable,
+    carId, carModel, costHour,
   }: Car): Promise<Car> {
+    const rentAvailable = await this.isRentAvailable(carId);
     await mysqlConnection.execute(
       'UPDATE happmobi.Cars SET car_model = ?, cost_hour = ?, rent_available = ? WHERE car_id = ?', [carModel, costHour, rentAvailable, carId],
     );
