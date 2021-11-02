@@ -21,7 +21,8 @@ export class LoginComponent {
     console.log(this.form.value);
     this.http.post('http://localhost:3000/login', this.form.value).subscribe(
       (response) => console.log(response),
-      ({ error: { err: { err } } }) => alert(err.message),
+      ({error}) => console.log(error)
+      // ({ error: { err: { err } } }) => alert(err.message),
     )
   }
 }
