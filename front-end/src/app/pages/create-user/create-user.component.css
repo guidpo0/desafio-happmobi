@@ -1,0 +1,60 @@
+.register-container {
+  background-color: #F0EDEE;
+  min-height: calc(100vh - 98px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 50px 0;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card h3 {
+  line-height: 40px;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-container label {
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+  width: 100%;
+}
+
+.form-container label input {
+  padding: 3px;
+  margin-top: 5px;
+  font-size: 16px;
+  border-color: #cccccc;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 5px 0px rgb(42 42 42 / 75%);
+}
+.form-container button {
+  box-shadow: rgb(145 184 179) 0px 1px 3px 0px inset;
+  background: linear-gradient(rgb(118, 141, 135) 5%, rgb(108, 124, 124) 100%) rgb(118, 141, 135);
+  border-radius: 5px;
+  border: 1px solid rgb(86, 105, 99);
+  display: inline-block;
+  cursor: pointer;
+  color: rgb(255, 255, 255);
+  font-size: 15px;
+  font-weight: bold;
+  padding: 11px 23px;
+  margin: 10px;
+  text-transform: uppercase;
+  text-decoration: none;
+  text-shadow: rgb(43 102 94) 0px -1px 0px;
+}

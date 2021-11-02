@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AuthService } from './auth/auth.service';
+import { RoleGuardService } from './auth/role-guard.service';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -41,6 +42,7 @@ import { HttpClientModule } from '@angular/common/http';
   providers: [
     AuthService,
     JwtHelperService,
+    RoleGuardService,
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
   ],
   bootstrap: [AppComponent]

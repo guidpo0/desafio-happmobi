@@ -1,1 +1,69 @@
-<p>create-user works!</p>
+<app-header>
+  <app-navbar></app-navbar>
+</app-header>
+<main class="register-container">
+  <section class="card">
+    <h3>
+      Para criar uma conta preencha os campos abaixo:
+    </h3>
+    <form class="form-container" [formGroup]="form" (ngSubmit)="submitForm()">
+      <label>
+        Seu email:
+        <input
+          type="email"
+          formControlName="userEmail"
+        >
+      </label>
+      <label>
+        Sua senha:
+        <input
+          type="password"
+          formControlName="userPassword"
+        >
+      </label>
+      <label>
+        Primeiro nome:
+        <input
+          type="text"
+          formControlName="firstName"
+        >
+      </label>
+      <label>
+        Sobrenome:
+        <input
+          type="text"
+          formControlName="lastName"
+        >
+      </label>
+      <label>
+        Telefone:
+        <input
+          type="text"
+          formControlName="phone"
+        >
+      </label>
+      <label>
+        Rua:
+        <input
+          type="text"
+          formControlName="street"
+        >
+      </label>
+      <label>
+        Cidade:
+        <input
+          type="text"
+          formControlName="city"
+        >
+      </label>
+      <label>
+        CEP:
+        <input
+          type="text"
+          formControlName="zip"
+        >
+      </label>
+      <button>Criar conta</button>
+    </form>
+  </section>
+</main>
