@@ -8,36 +8,41 @@ import { LoginComponent } from './pages/login/login.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { RentsComponent } from './pages/rents/rents.component';
-import {
-  AuthGuardService as AuthGuard 
-} from './auth/auth-guard.service';
-import { 
-  RoleGuardService as RoleGuard 
-} from './auth/role-guard.service';
+import { AuthGuardService } from './auth/auth-guard.service';
+import { RoleGuardService } from './auth/role-guard.service';
+import { LoggedInGuardService } from './auth/logged-in-guard.service';
 
 const routes: Routes = [
   { path: '', component: LandingPageComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: CreateUserComponent },
+  {
+    path: 'login',
+    component: LoginComponent,
+    canActivate: [LoggedInGuardService],
+  },
+  {
+    path: 'register',
+    component: CreateUserComponent,
+    canActivate: [LoggedInGuardService],
+  },
   { 
     path: 'profile',
     component: ProfileComponent,
-    canActivate: [AuthGuard] 
+    canActivate: [AuthGuardService],
   },
   { 
     path: 'cars-available',
     component: CarsAvailableComponent,
-    canActivate: [AuthGuard] 
+    canActivate: [AuthGuardService],
   },
   { 
     path: 'rents',
     component: RentsComponent,
-    canActivate: [AuthGuard] 
+    canActivate: [AuthGuardService],
   },
   { 
     path: 'admin', 
     component: AdminComponent, 
-    canActivate: [RoleGuard], 
+    canActivate: [RoleGuardService], 
     data: { 
       expectedRole: 'admin'
     },

@@ -2,23 +2,26 @@
   <app-navbar></app-navbar>
 </app-header>
 <main class="login-container">
-  <section>
-    <form [formGroup]="form" (ngSubmit)="submitForm()">
-      <label>
-        <input
-          type="email"
-          placeholder="E-mail"
-          formControlName="userEmail"
-        >
-      </label>
-      <label>
-        <input
-          type="password"
-          placeholder="Senha"
-          formControlName="userPassword"
-        >
-      </label>
+  <section class="card">
+    <h3>
+      Seja bem vinda(o)!
+      <br>
+      Faça login
+    </h3>
+    <form class="form-container" [formGroup]="form" (ngSubmit)="submitForm()">
+      <input
+        type="email"
+        placeholder="E-mail"
+        formControlName="userEmail"
+      >
+      <input
+        type="password"
+        placeholder="Senha"
+        formControlName="userPassword"
+      >
       <button>Login</button>
-  </form>
+    </form>
+    <h4>Ou crie uma conta</h4>
+    <a routerLink="/register">Criar Conta</a>
   </section>
 </main>
