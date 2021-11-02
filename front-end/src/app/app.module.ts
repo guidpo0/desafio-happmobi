@@ -15,6 +15,8 @@ import { AdminComponent } from './pages/admin/admin.component';
 import { RentsComponent } from './pages/rents/rents.component';
 import { HeaderComponent } from './components/header/header.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -33,6 +35,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    ReactiveFormsModule,
+    HttpClientModule,
   ],
   providers: [
     AuthService,
