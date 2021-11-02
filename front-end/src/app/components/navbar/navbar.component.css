@@ -1,0 +1,11 @@
+:host {
+  padding: 10px;
+  justify-content: center;
+  display: flex;
+}
+
+a {
+  text-decoration: none;
+  color: wheat;
+  font-weight: 500;
+}
