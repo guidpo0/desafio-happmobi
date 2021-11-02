@@ -1,0 +1,38 @@
+.hero {
+  background-image: url('../../../assets/hero-bg.jpg');
+  height: calc(100vh - 98px);
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 50vw;
+  text-align: center;
+  color: wheat;
+  padding: 30px;
+  border-radius: 20px;
+  background-color: rgba(114, 2, 2, 0.466);
+}
+
+.hero section p {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  line-height: 40px;
+}
+
+.hero section a {
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-decoration: none;
+  color: wheat;
+  background-color: rgba(114, 2, 2, 1);
+  padding: 20px 15px;
+  border-radius: 20px;
+}
