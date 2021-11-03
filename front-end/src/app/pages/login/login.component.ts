@@ -40,10 +40,13 @@ export class LoginComponent {
       (response) => {
         localStorage.setItem('token', response.token);
         const { data: { userRole } }: { data: User } = jwtDecode(response.token);
-        userRole === 'admin'
-          ? this.store.dispatch(new NavbarLinksAdminLogged())
-          : this.store.dispatch(new NavbarLinksUserLogged());
-        this.router.navigateByUrl('/cars-available');
+        if (userRole === 'admin') {
+          this.store.dispatch(new NavbarLinksAdminLogged())
+          this.router.navigateByUrl('/admin');
+        } else {
+          this.store.dispatch(new NavbarLinksUserLogged());
+          this.router.navigateByUrl('/cars-available');
+        }
       },
       ({ error: { err } }) => alert(err.message),
     );

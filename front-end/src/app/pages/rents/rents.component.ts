@@ -37,7 +37,7 @@ export class RentsComponent implements OnInit {
       costHour: 0,
       rentAvailable: true,
     }
-  ]
+  ];
 
   constructor(private http: HttpClient) {
     const token = localStorage.getItem('token');
