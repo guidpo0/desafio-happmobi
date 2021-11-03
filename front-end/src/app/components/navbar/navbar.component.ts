@@ -54,4 +54,15 @@ export class NavbarComponent implements OnChanges {
   ngOnChanges(): void {
     this.setNavbarLinks();
   }
+
+  showNavbar() {
+    const topNavbar = document.querySelector('.topnav');
+    if (topNavbar) {
+      if (topNavbar.className === "topnav") {
+        topNavbar.className += " responsive";
+      } else {
+        topNavbar.className = "topnav";
+      }
+    }
+  }
 }

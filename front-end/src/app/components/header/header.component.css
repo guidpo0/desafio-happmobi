@@ -8,3 +8,9 @@
   color: #0A2239;
   padding: 10px;
 }
+
+@media screen and (max-width: 768px) {
+  :host {
+    padding-bottom: 30px;
+  }
+}
