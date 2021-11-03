@@ -1,6 +1,6 @@
 export interface Car {
-  carId: number,
+  carId?: number,
   carModel: string,
   costHour: number,
-  rentAvailable: boolean,
+  rentAvailable?: boolean,
 }

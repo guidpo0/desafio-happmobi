@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import jwtDecode from 'jwt-decode';
 import { Rent } from 'src/_models/rent.model';
 import { User } from 'src/_models/user.model';
+import { Car } from 'src/_models/car.model';
 
 @Component({
   selector: 'app-rents',
@@ -29,6 +30,14 @@ export class RentsComponent implements OnInit {
     userRole: '',
     zip: '',
   }
+  cars: Car[] = [
+    {
+      carId: 1,
+      carModel: '',
+      costHour: 0,
+      rentAvailable: true,
+    }
+  ]
 
   constructor(private http: HttpClient) {
     const token = localStorage.getItem('token');
@@ -40,6 +49,7 @@ export class RentsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUserRents();
+    this.getCars();
   }
 
   getUserRents() {
@@ -50,5 +60,21 @@ export class RentsComponent implements OnInit {
       },
       ({ error: { err } }) => alert(err.message),
     );
+  }
+
+  getCars() {
+    this.http.get<{ cars: Car[]}>('http://localhost:3000/cars').subscribe(
+      (response) => {
+        this.cars = response.cars;
+      },
+      ({ error: { err } }) => alert(err.message),
+    );
+  }
+
+  getCarModel(carId: number) {
+    const carFound: Car = this.cars.find(
+      (car) => car.carId === carId,
+    ) || { carModel: '', costHour: 0 };
+    return carFound.carModel;
   }
 }

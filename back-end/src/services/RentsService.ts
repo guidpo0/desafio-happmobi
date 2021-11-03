@@ -8,6 +8,8 @@ import {
   USER_NOT_FOUND_ERROR,
   CAR_NOT_AVAILABLE_ERROR,
   RENT_END_DATE_ERROR,
+  RENT_START_DATE_ERROR,
+  RENT_DATE_ERROR,
 } from '../helpers/errorsCodes';
 
 class RentsService {
@@ -16,6 +18,9 @@ class RentsService {
   }: BaseRent): Promise<Rent | { err: ResponseError }> {
     const rentEndTime = new Date(rentEnd).getTime();
     if (rentEndTime < Date.now()) return RENT_END_DATE_ERROR;
+    const rentStartTime = new Date(rentStart).getTime();
+    if (rentStartTime < Date.now()) return RENT_START_DATE_ERROR;
+    if (rentEndTime < rentStartTime) return RENT_DATE_ERROR;
     const car = await CarsModel.getById(carId);
     if (!car) return CAR_NOT_FOUND_ERROR;
     if (!car.rentAvailable) return CAR_NOT_AVAILABLE_ERROR;

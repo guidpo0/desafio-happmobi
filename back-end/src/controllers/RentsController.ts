@@ -5,7 +5,7 @@ import { BaseRent } from '../helpers/interfaces';
 
 class RentsController {
   async create(
-    req: Request, res: Response,
+    req: Request, res: Response, next: NextFunction,
   ): Promise<Response | void> {
     const {
       carId, rentStart, rentEnd,
@@ -13,9 +13,10 @@ class RentsController {
     const { userId } = req.user;
     const rent = await RentsService.create(
       {
-        carId, userId, rentStart, rentEnd,
+        carId, userId, rentStart, rentEnd
       },
     );
+    if (rent.err) return next(rent.err);
     return res.status(CREATED_STATUS).json(rent);
   }
 

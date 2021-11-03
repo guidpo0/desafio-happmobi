@@ -22,3 +22,7 @@
 .card div p {
   margin: 15px;
 }
+
+.card div p span {
+  font-weight: 600;
+}

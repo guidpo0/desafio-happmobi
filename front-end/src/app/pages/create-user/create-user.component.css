@@ -42,6 +42,7 @@
   border-radius: 8px;
   box-shadow: 0px 0px 5px 0px rgb(42 42 42 / 75%);
 }
+
 .form-container button {
   box-shadow: rgb(145 184 179) 0px 1px 3px 0px inset;
   background: linear-gradient(rgb(118, 141, 135) 5%, rgb(108, 124, 124) 100%) rgb(118, 141, 135);
