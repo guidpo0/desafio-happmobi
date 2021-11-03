@@ -1,0 +1,14 @@
+<main class="cars-available-container">
+  <h3>
+    Carros disponíveis
+    <br>
+    Escolha o que melhor atenda suas necessidades
+  </h3>
+  <div class="cards-container">
+    <div class="card" *ngFor="let car of cars">
+      <p>{{car.carModel}}</p>
+      <p>R$ {{car.costHour | number: '1.2-2'}} por hora</p>
+      <a [routerLink]="'/simulate/'+car.carId">Simular aluguel</a>
+    </div>
+  </div>
+</main>

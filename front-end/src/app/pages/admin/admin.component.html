@@ -1,0 +1,49 @@
+<main class="admin-container">
+  <section class="cars-container">
+    <h3>Frota Cadastrada</h3>
+    <table>
+      <caption></caption>
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Modelo</th>
+          <th scope="col">Custo/Hora</th>
+          <th scope="col">Status</th>
+          <th scope="col">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let car of cars">
+          <td>{{ car.carId }}</td>
+          <td>{{ car.carModel }}</td>
+          <td>{{ car.costHour | number: "1.2-2"}}</td>
+          <td>{{ car.rentAvailable ? 'DISPONÍVEL' : 'ALUGADO' }}</td>
+          <td>
+            <button (click)="editCar(car)">Editar</button>
+            <button (click)="removeCar(car.carId)">Remover</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="create-car-container">
+    <h3>Cadastrar Carro</h3>
+    <form class="form-container" [formGroup]="form" (ngSubmit)="submitForm()">
+      <label>
+        Modelo:
+        <input
+          type="text"
+          formControlName="carModel"
+        >
+      </label>
+      <label>
+        Custo por hora:
+        <input
+          type="number"
+          formControlName="costHour"
+        >
+      </label>
+      <button>Cadastrar</button>
+    </form>
+  </section>
+</main>

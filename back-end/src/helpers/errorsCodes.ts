@@ -44,8 +44,22 @@ export const CAR_NOT_AVAILABLE_ERROR = {
 
 export const RENT_END_DATE_ERROR = {
   err: {
-    code: 'rent_end_date',
+    code: 'rent_date_invalid',
     message: 'Rental end date cannot be less than now',
+  },
+};
+
+export const RENT_START_DATE_ERROR = {
+  err: {
+    code: 'rent_date_invalid',
+    message: 'Rental start date cannot be less than now',
+  },
+};
+
+export const RENT_DATE_ERROR = {
+  err: {
+    code: 'rent_date_invalid',
+    message: 'Rental end date cannot be less than rental start date',
   },
 };
 

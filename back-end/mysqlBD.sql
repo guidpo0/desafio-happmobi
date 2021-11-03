@@ -1,20 +1,20 @@
 SET GLOBAL EVENT_SCHEDULER = ON;
 
-CREATE DATABASE IF NOT EXISTS `happmobi`;
+CREATE DATABASE IF NOT EXISTS `heroku_c59813370649050`;
 
-DROP TABLE IF EXISTS `happmobi`.`Rents`;
-DROP TABLE IF EXISTS `happmobi`.`Users`;
-DROP TABLE IF EXISTS `happmobi`.`Address`;
-DROP TABLE IF EXISTS `happmobi`.`Cars`;
+DROP TABLE IF EXISTS `heroku_c59813370649050`.`Rents`;
+DROP TABLE IF EXISTS `heroku_c59813370649050`.`Users`;
+DROP TABLE IF EXISTS `heroku_c59813370649050`.`Address`;
+DROP TABLE IF EXISTS `heroku_c59813370649050`.`Cars`;
 
-CREATE TABLE IF NOT EXISTS happmobi.Address (
+CREATE TABLE IF NOT EXISTS heroku_c59813370649050.Address (
   address_id INT PRIMARY KEY AUTO_INCREMENT,
   street VARCHAR(50) NOT NULL,
   city VARCHAR(50) NOT NULL,
   zip VARCHAR(50) NOT NULL
 );
 
-INSERT INTO happmobi.Address(street, city, zip) VALUES
+INSERT INTO heroku_c59813370649050.Address(street, city, zip) VALUES
   ('Rua 03 de Outubro', 'São Paulo', '08090-284'),
   ('Rua 13 de Maio', 'São Paulo', '04849-529'),
   ('Rua 21 de Abril', 'São Paulo', '03047-000'),
@@ -22,7 +22,7 @@ INSERT INTO happmobi.Address(street, city, zip) VALUES
   ('Rua Abraham Lincoln', 'São Paulo', '05123-000'),
   ('Rua Abreu Lemos', 'São Paulo', '02338-030');
 
-CREATE TABLE IF NOT EXISTS happmobi.Users (
+CREATE TABLE IF NOT EXISTS heroku_c59813370649050.Users (
   user_id INT PRIMARY KEY AUTO_INCREMENT,
   user_email VARCHAR(50) NOT NULL,
   user_password VARCHAR(50) NOT NULL,
@@ -34,28 +34,28 @@ CREATE TABLE IF NOT EXISTS happmobi.Users (
   FOREIGN KEY (address_id) REFERENCES Address(address_id)
 );
 
-INSERT INTO happmobi.Users(user_email, user_password, user_role, first_name, last_name, phone, address_id) VALUES
+INSERT INTO heroku_c59813370649050.Users(user_email, user_password, user_role, first_name, last_name, phone, address_id) VALUES
   ('claudio@teste.com', 'claudioteste', 'admin', 'Claudio', 'Teste', '11 99999-9999',
-  (SELECT address_id FROM happmobi.Address WHERE zip = '08090-284')),
+  (SELECT address_id FROM heroku_c59813370649050.Address WHERE zip = '08090-284')),
   ('joana@teste.com', 'joanateste', 'user', 'Joana', 'Teste', '11 99999-9999',
-  (SELECT address_id FROM happmobi.Address WHERE zip = '04849-529')),
+  (SELECT address_id FROM heroku_c59813370649050.Address WHERE zip = '04849-529')),
   ('bernardo@teste.com', 'bernardoteste', 'user', 'Bernardo', 'Teste', '11 99999-9999',
-  (SELECT address_id FROM happmobi.Address WHERE zip = '03047-000')),
+  (SELECT address_id FROM heroku_c59813370649050.Address WHERE zip = '03047-000')),
   ('maria@teste.com', 'mariateste', 'user', 'Maria', 'Teste', '11 99999-9999',
-  (SELECT address_id FROM happmobi.Address WHERE zip = '03807-020')),
+  (SELECT address_id FROM heroku_c59813370649050.Address WHERE zip = '03807-020')),
   ('antonio@teste.com', 'antonioteste', 'user', 'Antonio', 'Teste', '11 99999-9999',
-  (SELECT address_id FROM happmobi.Address WHERE zip = '05123-000')),
+  (SELECT address_id FROM heroku_c59813370649050.Address WHERE zip = '05123-000')),
   ('roberta@teste.com', 'robertateste', 'user', 'Roberta', 'Teste', '11 99999-9999',
-  (SELECT address_id FROM happmobi.Address WHERE zip = '02338-030'));
+  (SELECT address_id FROM heroku_c59813370649050.Address WHERE zip = '02338-030'));
 
-CREATE TABLE IF NOT EXISTS happmobi.Cars (
+CREATE TABLE IF NOT EXISTS heroku_c59813370649050.Cars (
   car_id INT PRIMARY KEY AUTO_INCREMENT,
   car_model VARCHAR(50) NOT NULL,
   cost_hour FLOAT NOT NULL,
   rent_available BOOLEAN NOT NULL
 );
 
-INSERT INTO happmobi.Cars(car_model, cost_hour, rent_available) VALUES
+INSERT INTO heroku_c59813370649050.Cars(car_model, cost_hour, rent_available) VALUES
   ('Mini Cooper Cabrio 2.0', 43.36, true),
   ('T-Cross 1.0 Turbo', 19.45, true),
   ('Renegade 1.8', 19.54, true),
@@ -63,7 +63,7 @@ INSERT INTO happmobi.Cars(car_model, cost_hour, rent_available) VALUES
   ('Polo MSI 1.6', 13.45, true),
   ('HB20 1.6', 13.89, true);
 
-CREATE TABLE IF NOT EXISTS happmobi.Rents (
+CREATE TABLE IF NOT EXISTS heroku_c59813370649050.Rents (
   rent_id INT PRIMARY KEY AUTO_INCREMENT,
   car_id INT NOT NULL,
   user_id INT NOT NULL,

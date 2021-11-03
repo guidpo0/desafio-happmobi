@@ -1,0 +1,16 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-color: #426A5A;
+  color: #0A2239;
+  padding: 10px;
+}
+
+@media screen and (max-width: 768px) {
+  :host {
+    padding-bottom: 30px;
+  }
+}

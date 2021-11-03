@@ -13,12 +13,10 @@ export default function ErrorController(
 ): Response<ResponseError> {
   if (err.isJoi) {
     const { message } = err.details[0];
-    return res.status(UNPROCESSABLE_ENTITY_STATUS).json(
-      { err: INVALID_DATA_ERROR(message) },
-    );
+    return res.status(UNPROCESSABLE_ENTITY_STATUS).json(INVALID_DATA_ERROR(message));
   }
-  if (['rent_end_date', 'car_not_available', 'not_found'].includes(err.code)) {
+  if (['rent_date_invalid', 'car_not_available', 'not_found'].includes(err.code)) {
     return res.status(UNPROCESSABLE_ENTITY_STATUS).json({ err });
   }
-  return res.status(INTERNAL_SERVER_ERROR_STATUS).json({ err: INTERNAL_SERVER_ERROR });
+  return res.status(INTERNAL_SERVER_ERROR_STATUS).json(INTERNAL_SERVER_ERROR);
 }

@@ -1,0 +1,17 @@
+<nav>
+  <div class="topnav">
+    <a
+      class="topnav-link"
+      *ngFor="let link of links"
+      [routerLink]="link.link"
+    >
+      {{link.text}}
+    </a>
+    <p class="topnav-link log-out" [hidden]="!isLoggedIn">
+      Logado como {{userName}} <button (click)="logout()">Sair</button>
+    </p>
+    <a href="javascript:void(0);" class="icon" (click)="showNavbar()">
+      <i class="fa fa-bars"></i>
+    </a>
+  </div>
+</nav>
