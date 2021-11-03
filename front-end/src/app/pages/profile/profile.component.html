@@ -1,1 +1,13 @@
-<p>profile works!</p>
+<main class="profile-container">
+  <section class="card">
+    <h3>Seus dados:</h3>
+    <div>
+      <p>Nome: {{user.firstName + ' ' + user.lastName}}</p>
+      <p>Email: {{user.userEmail}}</p>
+      <p>Telefone: {{user.phone}}</p>
+      <p>Endereço: {{user.street + ', ' + user.city}}</p>
+      <p>CEP: {{user.zip}}</p>
+    </div>
+    <a routerLink="/profile/edit">Editar dados</a>
+  </section>
+</main>

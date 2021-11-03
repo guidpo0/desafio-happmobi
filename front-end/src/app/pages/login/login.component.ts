@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import jwtDecode from 'jwt-decode';
 import { NavbarLink } from '../../../_models/navbar-link.model';
-import User from '../../../_models/user.model';
+import { User } from '../../../_models/user.model';
 import { AuthService } from '../../auth/auth.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../reducers/index';
