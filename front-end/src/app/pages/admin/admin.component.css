@@ -109,3 +109,13 @@ table button:nth-of-type(1) {
   text-decoration: none;
   text-shadow: rgb(43 102 94) 0px -1px 0px;
 }
+
+@media screen and (max-width: 768px) {
+  th, td {
+    font-size: 12px !important;
+  }
+  table button:nth-of-type(1) {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+}
