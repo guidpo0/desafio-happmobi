@@ -1,48 +1,46 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import jwtDecode from 'jwt-decode';
 import { NavbarLink } from '../../../_models/navbar-link.model';
 import User from '../../../_models/user.model';
 import { AuthService } from '../../auth/auth.service';
-
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../reducers/index';
+import {
+  NavbarLinksAdminLogged,
+  NavbarLinksNotLogged,
+  NavbarLinksUserLogged,
+} from '../../../actions/navbar-links.action';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent {
-  links: NavbarLink[] = [{ link: '', text: '' }];
+export class NavbarComponent implements OnChanges {
+  @Input() links: NavbarLink[] = [{ link: '', text: '' }];
   isLoggedIn: boolean = false;
   userName: string = '';
 
-  constructor(public auth: AuthService) {
+  constructor(private store: Store<AppState>, public auth: AuthService) {
     this.setNavbarLinks();
   }
 
   setNavbarLinks(): void {
     if (this.auth.isAuthenticated()) {
       this.isLoggedIn = true;
-      this.links = [
-        { link: '/', text: 'Home' },
-        { link: '/cars-available', text: 'Carros Disponíveis' },
-        { link: '/rents', text: 'Meus Aluguéis' },
-        { link: '/profile', text: 'Perfil' },
-      ];
       const token = localStorage.getItem('token') || 'not_found';
       const { data: { userRole, firstName } }: { data: User } = jwtDecode(token);
+      console.log(userRole)
       this.userName = firstName;
-      if (userRole === 'admin') {
-        this.links = [
-          { link: '/admin', text: 'Admin' },
-          ...this.links,
-        ]      
-      } 
+      userRole === 'admin'
+        ? this.store.dispatch(new NavbarLinksAdminLogged()) : this.store.dispatch(new NavbarLinksUserLogged());
     } else {
-      this.links = [
-        { link: '/', text: 'Home' },
-        { link: '/login', text: 'Login' },
-        { link: '/register', text: 'Criar Conta' },
-      ];
+      this.isLoggedIn = false;
+      this.store.dispatch(new NavbarLinksNotLogged());
     }
+  }
+
+  ngOnChanges(): void {
+    this.setNavbarLinks();
   }
 }

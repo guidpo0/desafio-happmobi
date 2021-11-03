@@ -23,12 +23,8 @@ class LoginController {
       expiresIn: '1d',
       algorithm: 'HS256',
     };
-    const tokenData = {
-      userId: user.userId,
-      userEmail: user.userEmail,
-      userRole: user.userRole,
-    };
-    const token = jwt.sign({ data: tokenData }, secret, jwtConfig);
+    delete user.userPassword;
+    const token = jwt.sign({ data: user }, secret, jwtConfig);
     return res.status(OK_STATUS).json({ token });
   }
 }

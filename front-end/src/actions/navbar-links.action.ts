@@ -19,7 +19,7 @@ export class NavbarLinksNotLogged implements Action {
     { link: '/register', text: 'Criar Conta' },
   ];
 
-  constructor(public payload: NavbarLink[]) { }
+  constructor() { }
 }
 
 export class NavbarLinksUserLogged implements Action {
@@ -32,7 +32,7 @@ export class NavbarLinksUserLogged implements Action {
     { link: '/profile', text: 'Perfil' },
   ];
 
-  constructor(public payload: NavbarLink[]) { }
+  constructor() { }
 }
 
 export class NavbarLinksAdminLogged implements Action {
@@ -46,7 +46,7 @@ export class NavbarLinksAdminLogged implements Action {
     { link: '/profile', text: 'Perfil' },
   ];
 
-  constructor(public payload: NavbarLink[]) { }
+  constructor() { }
 }
 
 export type AllActions = NavbarLinksNotLogged | NavbarLinksUserLogged | NavbarLinksAdminLogged;

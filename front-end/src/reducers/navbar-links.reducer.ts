@@ -2,7 +2,7 @@ import * as NavbarLinkActions from '../actions/navbar-links.action'
 import { NavbarLink } from '../_models/navbar-link.model';
 
 export interface NavbarLinkState {
-  readonly navbarLinks: NavbarLink[];
+  navbarLinks: NavbarLink[];
 }
 
 const initialState: NavbarLinkState = {

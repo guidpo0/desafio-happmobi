@@ -2,6 +2,17 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import jwtDecode from 'jwt-decode';
+import { NavbarLink } from '../../../_models/navbar-link.model';
+import User from '../../../_models/user.model';
+import { AuthService } from '../../auth/auth.service';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../reducers/index';
+import {
+  NavbarLinksAdminLogged,
+  NavbarLinksNotLogged,
+  NavbarLinksUserLogged,
+} from '../../../actions/navbar-links.action';
 
 @Component({
   selector: 'app-login',
@@ -15,19 +26,23 @@ export class LoginComponent {
     public fb: FormBuilder,
     private http: HttpClient,
     private router: Router,
-    ) {
+    private store: Store<AppState>,
+    public auth: AuthService
+  ) {
       this.form = fb.group({
         userEmail: '',
         userPassword: ''
       });
-    }
+  }
     
-    submitForm() {
-      console.log(this.form.value);
-      this.http.post<{ token: string }>('http://localhost:3000/login', this.form.value)
-    .subscribe(
+  submitForm() {
+    this.http.post<{ token: string }>('http://localhost:3000/login', this.form.value).subscribe(
       (response) => {
         localStorage.setItem('token', response.token);
+        const { data: { userRole } }: { data: User } = jwtDecode(response.token);
+        userRole === 'admin'
+          ? this.store.dispatch(new NavbarLinksAdminLogged())
+          : this.store.dispatch(new NavbarLinksUserLogged());
         this.router.navigateByUrl('/cars-available');
       },
       ({ error: { err } }) => alert(err.message),
