@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import User from 'src/app/_models/user.interface';
+import User from '../../../_models/user.model';
 
 @Component({
   selector: 'app-create-user',

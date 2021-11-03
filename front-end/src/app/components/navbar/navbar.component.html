@@ -1,3 +1,4 @@
 <nav>
-  <a routerLink="/login">Login</a>
+  <a *ngFor="let link of links" [routerLink]="link.link">{{link.text}}</a>
+  <p [hidden]="!isLoggedIn">Logado como {{userName}} <button>Sair</button></p>
 </nav>

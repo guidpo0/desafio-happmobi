@@ -3,6 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AuthService } from './auth/auth.service';
 import { RoleGuardService } from './auth/role-guard.service';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { StoreModule } from '@ngrx/store';
+import { reducers } from '../reducers';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -38,6 +40,7 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
+    StoreModule.forRoot(reducers),
   ],
   providers: [
     AuthService,

@@ -2,10 +2,27 @@
   padding: 10px;
   justify-content: center;
   display: flex;
+  width: 90vw;
+  position: relative;
 }
 
 a {
   text-decoration: none;
   color: wheat;
   font-weight: 500;
+  margin: 0 10px;
+}
+
+p {
+  position: absolute;
+  right: 30px;
+  top: 10px;
+}
+
+button {
+  background-color: transparent;
+  border: none;
+  color: wheat;
+  font-weight: 500;
+  font-size: 17px;
 }
