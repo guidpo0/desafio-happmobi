@@ -10,6 +10,7 @@ import {
   NavbarLinksNotLogged,
   NavbarLinksUserLogged,
 } from '../../../actions/navbar-links.action';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -21,7 +22,11 @@ export class NavbarComponent implements OnChanges {
   isLoggedIn: boolean = false;
   userName: string = '';
 
-  constructor(private store: Store<AppState>, public auth: AuthService) {
+  constructor(
+    private store: Store<AppState>,
+    public auth: AuthService,
+    private router: Router,  
+  ) {
     this.setNavbarLinks();
   }
 
@@ -38,6 +43,13 @@ export class NavbarComponent implements OnChanges {
       this.isLoggedIn = false;
       this.store.dispatch(new NavbarLinksNotLogged());
     }
+  }
+
+  logout(): void {
+    localStorage.clear();
+    this.isLoggedIn = false;
+    this.store.dispatch(new NavbarLinksNotLogged());
+    this.router.navigate(['/']);
   }
 
   ngOnChanges(): void {

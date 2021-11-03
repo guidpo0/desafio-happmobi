@@ -2,5 +2,7 @@
   <div>
     <a *ngFor="let link of links" [routerLink]="link.link">{{link.text}}</a>
   </div>
-  <p [hidden]="!isLoggedIn">Logado como {{userName}} <button>Sair</button></p>
+  <p [hidden]="!isLoggedIn">
+    Logado como {{userName}} <button (click)="logout()">Sair</button>
+  </p>
 </nav>
