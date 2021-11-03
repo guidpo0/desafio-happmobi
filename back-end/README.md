@@ -1,12 +1,12 @@
 ### Informações Gerais
 
-Projeto desenvolvido para processo seletivo da Nimbus Meteorologia.
+Projeto desenvolvido para processo seletivo da Happmobi.
 
 ---
 
-# Boas vindas ao repositório de Back-End projeto!
+# Boas vindas ao repositório de Back-End do projeto!
 
-Neste projeto foi desenvolvida uma API utilizando a arquitetura MSC (Model, Service, Controller) aplicando os padrões RESTful. A API trata-se de registros de previsão de chuva onde é possível criar e visualizar as informações.
+Neste projeto foi desenvolvida uma API utilizando a arquitetura MSC (Model, Service, Controller) aplicando os padrões RESTful. A API trata-se de registros de usuários, carros e de aluguéis que serão utilizados para gerenciar um site de aluguel de carros.
 
 Lembrando que esta aplicação corresponde aos meus esforços para melhorar minhas hard skills e soft skills, sinta-se à vontade para explorá-la! Feedbacks construtivos são sempre bem vindos!
 
@@ -54,6 +54,8 @@ Nesse projeto, fui capaz de:
     `DB_USER`: usuário do seu banco de dados
     `DB_PASSWORD`: senha do seu banco de dados
     `PORT`: porta em que a aplicação irá rodar (opicional, padrão 3001)
+    `JWT_SECRET`: senha que será utilizada na validação com JWT
+    `DB_DATABASE=heroku_c59813370649050`
   * Crie o banco de dados utilizando os comandos que estão no arquivo `mysqlBD.sql` na raíz do projeto.
 
 4. Inicialize o projeto
@@ -75,49 +77,57 @@ O banco de dados utilizado é relacional e foi utilizado o MySQL.
 
 ### Tabelas
 
-O banco possui três tabelas: Dates, Districts e Climates.
+O banco possui quatro tabelas: Users, Address, Rents e Cars.
 
-Os campos da tabela `Dates` possuem esse formato:
-
-```json
-{ "date_id": 1, "date_name": "DD/MM", "district_id": 1 }
-```
-
-A resposta do insert que deve retornar após a criação é parecida com essa:
+Os campos da tabela `Users` possuem esse formato:
 
 ```json
-{ "dateId": 1, "dateName": "DD/MM", "districtId": 1 }
+{
+  "user_id": 1,
+  "user_email": "email@email.com",
+  "user_password": "password",
+  "user_role": "admin ou user",
+  "first_name": "first",
+  "last_name": "last",
+  "phone": "11 98485-4845",
+  "address_id": 1
+}
 ```
 
-(O dateId será gerado automaticamente)
-
-Os campos da tabela `Districts` possuem esse formato:
+Os campos da tabela `Address` possuem esse formato:
 
 ```json
-{ "district_id": 1, "district_name": "Example" }
+{
+  "address_id": 1,
+  "street": "street",
+  "city": "city",
+  "zip": "zip"
+}
 ```
 
-A resposta do insert que deve retornar após a criação é parecida com essa:
+Os campos da tabela `Rents` possuem esse formato:
 
 ```json
-{ "districtId": 1, "districtName": "Example" }
+{
+  "rent_id": 1,
+  "car_id": 1,
+  "user_id": 1,
+  "rent_start": "YYYY/MM/DD HH:MM",
+  "rent_end": "YYYY/MM/DD HH:MM",
+  "total": 100
+}
 ```
 
-(O districtId será gerado automaticamente)
-
-Os campos da tabela `Climates` possuem esse formato:
+Os campos da tabela `Cars` possuem esse formato:
 
 ```json
-{ "climate_id": 1, "climate_hour": 0, "climate_rain": 0.0, "date_id": 1 }
+{
+  "car_id": 1,
+  "car_model": "some car",
+  "cost_hour": 10,
+  "rent_available": true || false
+}
 ```
-
-A resposta do insert que deve retornar após a criação é parecida com essa:
-
-```json
-{ "climateIid": 1, "climateHour": 0, "climateRain": 0.0, "dateId": 1 }
-```
-
-(O climateIid será gerado automaticamente)
 
 ## Desenvolvimento
 
@@ -139,13 +149,21 @@ Neste projeto as seguintes stacks foram utilizadas no desenvolvimento:
 
 - [Nodemon](https://www.npmjs.com/package/nodemon)
 
+- [Sucrase](https://www.npmjs.com/package/sucrase)
+
+- [JWT](https://www.npmjs.com/package/jsonwebtoken)
+
+- [MySQL](https://www.npmjs.com/package/mysql2)
+
+- [TypeScript](https://www.npmjs.com/package/typescript)
+
 ---
 
 # Padrões e Conexões
 
 ## Endpoints da API
 
-### https://desafio-nimbus-backend.herokuapp.com/dates
+### https://desafio-happmobi-backend.herokuapp.com/cars
 
 - Método GET:
 
@@ -153,11 +171,12 @@ O retorno da API será:
 
 ```json
 {
-  dates: [
+  cars: [
     {
-      "dateId": 1,
-      "dateName": "DD/MM",
-      "districtId": 1
+      "carId": 1,
+      "carModel": "some car",
+      "costHour": 10,
+      "rentAvailable": true || false
     },
     ...
   ],
@@ -166,29 +185,40 @@ O retorno da API será:
 
 - Método POST:
 
-O endpoint deve receber a seguinte estrutura:
+O body enviado na requisição deve receber a seguinte estrutura:
 
 ```json
 {
-  "dateName": "product_name",
-  "districtId": "product_quantity"
+  "carModel": "some car",
+  "costHour": 10,
+  "rentAvailable": true || false
 }
 ```
 
-  - `dateName` deve ser uma _string_ com 5 caracteres;
-  - `districtId` deve ser um ID existente de um bairro cadastrado na tabela Districts.
+  - `carModel` deve ser uma _string_;
+  - `costHour` deve ser um _number_ maior que 0;
+  - `rentAvailable` deve ser um _boolean_.
+
+O usuário logado deve ser 'admin' e o headers enviado na requisição deve receber a seguinte estrutura:
+
+```json
+{
+  "Authorization": token,
+}
+```
 
 O retorno da API em caso de sucesso será:
 
 ```json
 {
-  "dateId": 1,
-  "dateName": "DD/MM",
-  "districtId": 1
+  "carId": 1,
+  "carModel": "some car",
+  "costHour": 10,
+  "rentAvailable": true || false
 }
 ```
 
-### https://desafio-nimbus-backend.herokuapp.com/dates/:id
+### https://desafio-happmobi-backend.herokuapp.com/cars/:id
 
 - Método GET
 
@@ -196,60 +226,131 @@ O retorno da API em caso de sucesso será:
 
 ```json
 {
-  "dateId": 1,
-  "dateName": "DD/MM",
-  "districtId": 1
+  "carId": 1,
+  "carModel": "some car",
+  "costHour": 10,
+  "rentAvailable": true || false
 }
 ```
 
-### https://desafio-nimbus-backend.herokuapp.com/districts
+- Método PUT:
 
-- Método GET
+O carro respectivo ao id passado deve existir e não estar em uso e o body enviado na requisição deve receber a seguinte estrutura:
+
+```json
+{
+  "carModel": "some car",
+  "costHour": 10,
+  "rentAvailable": true || false
+}
+```
+
+  - `carModel` deve ser uma _string_;
+  - `costHour` deve ser um _number_ maior que 0;
+  - `rentAvailable` deve ser um _boolean_.
+
+O usuário logado deve ser 'admin' e o headers enviado na requisição deve receber a seguinte estrutura:
+
+```json
+{
+  "Authorization": token,
+}
+```
+
+O retorno da API em caso de sucesso será:
+
+```json
+{
+  "carId": 1,
+  "carModel": "some car",
+  "costHour": 10,
+  "rentAvailable": true || false
+}
+```
+
+- Método DELETE:
+
+O carro respectivo ao id passado deve existir e não estar em uso.
+
+O usuário logado deve ser 'admin' e o headers enviado na requisição deve receber a seguinte estrutura:
+
+```json
+{
+  "Authorization": token,
+}
+```
+
+O retorno da API em caso de sucesso será:
+
+```json
+{
+  "carId": 1,
+  "carModel": "some car",
+  "costHour": 10,
+  "rentAvailable": true || false
+}
+```
+
+### https://desafio-happmobi-backend.herokuapp.com/rents
+
+- Método GET:
 
 O retorno da API será:
 
 ```json
 {
-  districts: [
+  rents: [
     {
-      "districtId":5,
-      "districtName":"Copacabana",
-      "state":"RJ"
+      "rentId": 1,
+      "carId": 1,
+      "userId": 1,
+      "rentStart": "YYYY/MM/DD HH:MM",
+      "rentEnd": "YYYY/MM/DD HH:MM",
+      "total": 100
     },
     ...
   ],
 }
 ```
 
-- Método POST
+- Método POST:
 
-O endpoint deve receber a seguinte estrutura:
+O body enviado na requisição deve receber a seguinte estrutura:
 
 ```json
-[
-  {
-    "districtName":"Copacabana",
-    "state":"RJ"
-  }
-  ...
-]
+{
+  "carId": 1,
+  "rentStart": "YYYY/MM/DD HH:MM",
+  "rentEnd": "YYYY/MM/DD HH:MM",
+}
 ```
 
-  - `districtName` e `state` devem ser strings.
+  - `carId` deve ser um _number_;
+  - `rentStart` deve ser uma _string_ no formato indicado;
+  - `rentEnd` deve ser uma _string_ no formato indicado;
+
+O usuário logado deve ser 'admin' e o headers enviado na requisição deve receber a seguinte estrutura:
+
+```json
+{
+  "Authorization": token,
+}
+```
 
 O retorno da API em caso de sucesso será:
 
 ```json
 {
-  {
-    "districtId":5,
-    "districtName":"Copacabana",
-    "state":"RJ"
-  }
+  "rentId": 1,
+  "carId": 1,
+  "userId": 1,
+  "rentStart": "YYYY/MM/DD HH:MM",
+  "rentEnd": "YYYY/MM/DD HH:MM",
+  "total": 100
 }
 ```
 
-### https://desafio-nimbus-backend.herokuapp.com/districts/:id
+### https://desafio-happmobi-backend.herokuapp.com/rents/:id
 
 - Método GET
 
@@ -257,65 +358,155 @@ O retorno da API em caso de sucesso será:
 
 ```json
 {
-  "districtId":5,
-  "districtName":"Copacabana",
-  "state":"RJ"
+  "rentId": 1,
+  "carId": 1,
+  "userId": 1,
+  "rentStart": "YYYY/MM/DD HH:MM",
+  "rentEnd": "YYYY/MM/DD HH:MM",
+  "total": 100
 }
 ```
 
-### https://desafio-nimbus-backend.herokuapp.com/climates
+- Método PUT:
 
-- Método GET
+O carro respectivo ao carId passado deve existir e não estar em uso e o body enviado na requisição deve receber a seguinte estrutura:
+
+```json
+{
+  "carId": 1,
+  "rentStart": "YYYY/MM/DD HH:MM",
+  "rentEnd": "YYYY/MM/DD HH:MM",
+}
+```
+
+  - `carId` deve ser um _number_;
+  - `rentStart` deve ser uma _string_ no formato indicado;
+  - `rentEnd` deve ser uma _string_ no formato indicado;
+
+O usuário logado deve ser 'admin' e o headers enviado na requisição deve receber a seguinte estrutura:
+
+```json
+{
+  "Authorization": token,
+}
+```
+
+O retorno da API em caso de sucesso será:
+
+```json
+{
+  "rentId": 1,
+  "carId": 1,
+  "userId": 1,
+  "rentStart": "YYYY/MM/DD HH:MM",
+  "rentEnd": "YYYY/MM/DD HH:MM",
+  "total": 100
+}
+```
+
+- Método DELETE:
+
+O usuário logado deve ser 'admin' e o headers enviado na requisição deve receber a seguinte estrutura:
+
+```json
+{
+  "Authorization": token,
+}
+```
+
+O retorno da API em caso de sucesso será:
+
+```json
+{
+  "rentId": 1,
+  "carId": 1,
+  "userId": 1,
+  "rentStart": "YYYY/MM/DD HH:MM",
+  "rentEnd": "YYYY/MM/DD HH:MM",
+  "total": 100
+}
+```
+
+### https://desafio-happmobi-backend.herokuapp.com/users
+
+- Método GET:
 
 O retorno da API será:
 
 ```json
 {
-  climates: [
+  rents: [
     {
-      "climateId": 5,
-      "climateHour": 0,
-      "climateRain": 0.1,
-      "dateId": 85
+     "userId": 1,
+      "userEmail": "email@email.com",
+      "userRole": "admin ou user",
+      "firstName": "first",
+      "lastName": "last",
+      "phone": "11 98485-4845",
+      "street": "street",
+      "city": "city",
+      "zip": "zip"
     },
     ...
   ],
 }
 ```
 
-- Método POST
+- Método POST:
 
-O endpoint deve receber a seguinte estrutura:
+O body enviado na requisição deve receber a seguinte estrutura:
 
 ```json
-[
-  {
-    "climateHour": 0,
-    "climateRain": 0.1,
-    "dateId": 85
-  }
-  ...
-]
+{
+  "userId": 1,
+  "userEmail": "email@email.com",
+  "userPassword": "password",
+  "userRole": "admin ou user",
+  "firstName": "first",
+  "lastName": "last",
+  "phone": "11 98485-4845",
+  "street": "street",
+  "city": "city",
+  "zip": "zip"
+}
 ```
 
-  - `climateHour` deve ser um número inteiro entre 0 e 23;
-  - `climateRain` deve ser um número maior que 0;
-  - `dateId` deve ser o ID da uma data cadastrada na tabela `Dates`.
+  - `userId` deve ser um _number_;
+  - `userEmail` deve ser uma _string_;
+  - `userPassword` deve ser uma _string_;
+  - `userRole` deve ser 'admin' ou 'user';
+  - `firstName` deve ser uma _string_;
+  - `lastName` deve ser uma _string_;
+  - `phone` deve ser uma _string_;
+  - `street` deve ser uma _string_;
+  - `city` deve ser uma _string_;
+  - `zip` deve ser uma _string_.
+
+O usuário logado deve ser 'admin' e o headers enviado na requisição deve receber a seguinte estrutura:
+
+```json
+{
+  "Authorization": token,
+}
+```
 
 O retorno da API em caso de sucesso será:
 
 ```json
 {
-  {
-    "climateId": 5,
-    "climateHour": 0,
-    "climateRain": 0.1,
-    "dateId": 85
-  }
+  "userId": 1,
+  "userEmail": "email@email.com",
+  "userRole": "admin ou user",
+  "firstName": "first",
+  "lastName": "last",
+  "phone": "11 98485-4845",
+  "street": "street",
+  "city": "city",
+  "zip": "zip"
 }
 ```
 
-### https://desafio-nimbus-backend.herokuapp.com/districts/:id
+### https://desafio-happmobi-backend.herokuapp.com/users/:id
 
 - Método GET
 
@@ -323,11 +514,124 @@ O retorno da API em caso de sucesso será:
 
 ```json
 {
-  "districtId":5,
-  "districtName":"Copacabana",
-  "state":"RJ"
+  "userId": 1,
+  "userEmail": "email@email.com",
+  "userRole": "admin ou user",
+  "firstName": "first",
+  "lastName": "last",
+  "phone": "11 98485-4845",
+  "street": "street",
+  "city": "city",
+  "zip": "zip"
 }
 ```
+
+- Método PUT:
+
+O body enviado na requisição deve receber a seguinte estrutura:
+
+```json
+{
+  "userId": 1,
+  "userEmail": "email@email.com",
+  "userPassword": "password",
+  "userRole": "admin ou user",
+  "firstName": "first",
+  "lastName": "last",
+  "phone": "11 98485-4845",
+  "street": "street",
+  "city": "city",
+  "zip": "zip"
+}
+```
+
+  - `userId` deve ser um _number_;
+  - `userEmail` deve ser uma _string_;
+  - `userPassword` deve ser uma _string_;
+  - `userRole` deve ser 'admin' ou 'user';
+  - `firstName` deve ser uma _string_;
+  - `lastName` deve ser uma _string_;
+  - `phone` deve ser uma _string_;
+  - `street` deve ser uma _string_;
+  - `city` deve ser uma _string_;
+  - `zip` deve ser uma _string_.
+
+O headers enviado na requisição deve receber a seguinte estrutura:
+
+```json
+{
+  "Authorization": token,
+}
+```
+
+O retorno da API em caso de sucesso será:
+
+```json
+{
+  "userId": 1,
+  "userEmail": "email@email.com",
+  "userRole": "admin ou user",
+  "firstName": "first",
+  "lastName": "last",
+  "phone": "11 98485-4845",
+  "street": "street",
+  "city": "city",
+  "zip": "zip"
+}
+```
+
+- Método DELETE:
+
+O usuário logado deve ser 'admin' e o headers enviado na requisição deve receber a seguinte estrutura:
+
+```json
+{
+  "Authorization": token,
+}
+```
+
+O retorno da API em caso de sucesso será:
+
+```json
+{
+  "userId": 1,
+  "userEmail": "email@email.com",
+  "userRole": "admin ou user",
+  "firstName": "first",
+  "lastName": "last",
+  "phone": "11 98485-4845",
+  "street": "street",
+  "city": "city",
+  "zip": "zip"
+}
+```
+
+### https://desafio-happmobi-backend.herokuapp.com/login
+
+- Método POST:
+
+O body enviado na requisição deve receber a seguinte estrutura:
+
+```json
+{
+  "userEmail": "email@email.com",
+  "userPassword": "password",
+}
+```
+
+  - `userEmail` deve ser uma _string_ e um email cadastrado;
+  - `userPassword` deve ser uma _string_ e senha cadastrada para o email;
+
+
+O retorno da API em caso de sucesso será:
+
+```json
+{
+  "token": "token",
+}
+```
+
+---
 
 ## Mensagens de erro
 
