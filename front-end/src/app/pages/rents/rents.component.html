@@ -1,1 +1,13 @@
-<p>rents works!</p>
+<main class="rents-container">
+  <h3>Últimos alugueis:</h3>
+  <div *ngIf="rents.length > 0" class="cards-container">
+    <div class="card" *ngFor="let rent of rents">
+      <p>{{rent.rentStart}}</p>
+      <p>{{rent.rentEnd}}</p>
+      <p>{{rent.total}}</p>
+    </div>
+  </div>
+  <div *ngIf="rents.length === 0" class="no-rents">
+    <h4>Nenhum aluguel feito ainda</h4>
+  </div>
+</main>

@@ -35,7 +35,7 @@ import { SimulateComponent } from './pages/simulate/simulate.component';
     RentsComponent,
     HeaderComponent,
     NavbarComponent,
-    SimulateComponent
+    SimulateComponent,
   ],
   imports: [
     BrowserModule,

@@ -20,7 +20,7 @@ import { Router } from '@angular/router';
 export class NavbarComponent implements OnChanges {
   @Input() links: NavbarLink[] = [{ link: '', text: '' }];
   isLoggedIn: boolean = false;
-  userName: string = '';
+  userName: string | undefined = '';
 
   constructor(
     private store: Store<AppState>,
@@ -34,7 +34,7 @@ export class NavbarComponent implements OnChanges {
     if (this.auth.isAuthenticated()) {
       this.isLoggedIn = true;
       const token = localStorage.getItem('token') || 'not_found';
-      const { data: { userRole, firstName }, data }: { data: User } = jwtDecode(token);
+      const { data: { userRole, firstName } }: { data: User } = jwtDecode(token);
       this.userName = firstName;
       userRole === 'admin'
         ? this.store.dispatch(new NavbarLinksAdminLogged()) : this.store.dispatch(new NavbarLinksUserLogged());
