@@ -6,7 +6,7 @@ class CarsModel {
   async create({ carModel, costHour }: BaseCar): Promise<Car> {
     const rentAvailable = true;
     const [{ insertId }] = await mysqlConnection.execute(
-      'INSERT INTO happmobi.Cars (car_model, cost_hour, rent_available) VALUES (?,?,?)',
+      'INSERT INTO heroku_c59813370649050.Cars (car_model, cost_hour, rent_available) VALUES (?,?,?)',
       [carModel, costHour, rentAvailable],
     );
     return {
@@ -16,7 +16,7 @@ class CarsModel {
 
   async getAll(): Promise<Car[]> {
     const [cars] = await mysqlConnection.execute(
-      'SELECT * FROM happmobi.Cars',
+      'SELECT * FROM heroku_c59813370649050.Cars',
     );
     return cars.map(({
       car_id: carId,
@@ -30,7 +30,7 @@ class CarsModel {
 
   async getById(id: number): Promise<Car> {
     const [car] = await mysqlConnection.execute(
-      'SELECT * FROM happmobi.Cars WHERE car_id = ?', [id],
+      'SELECT * FROM heroku_c59813370649050.Cars WHERE car_id = ?', [id],
     );
     if (!car[0]) return null;
     return {
@@ -44,7 +44,7 @@ class CarsModel {
   async remove(id: number): Promise<Car> {
     const car = await this.getById(id);
     await mysqlConnection.execute(
-      'DELETE FROM happmobi.Cars WHERE car_id = ?', [id],
+      'DELETE FROM heroku_c59813370649050.Cars WHERE car_id = ?', [id],
     );
     return car;
   }
@@ -53,7 +53,7 @@ class CarsModel {
     carId, carModel, costHour,
   }: Car): Promise<Car> {
     await mysqlConnection.execute(
-      'UPDATE happmobi.Cars SET car_model = ?, cost_hour = ?, rent_available = ? WHERE car_id = ?', [carModel, costHour, true, carId],
+      'UPDATE heroku_c59813370649050.Cars SET car_model = ?, cost_hour = ?, rent_available = ? WHERE car_id = ?', [carModel, costHour, true, carId],
     );
     const car = await this.getById(carId);
     return car;
@@ -61,7 +61,7 @@ class CarsModel {
 
   async updateRentAvailable(carId: number, status: boolean): Promise<void> {
     await mysqlConnection.execute(
-      'UPDATE happmobi.Cars SET rent_available = ? WHERE car_id = ?', [status, carId],
+      'UPDATE heroku_c59813370649050.Cars SET rent_available = ? WHERE car_id = ?', [status, carId],
     );
   }
 }

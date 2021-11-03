@@ -13,7 +13,7 @@ class RentsModel {
   private async createOrUpdateEventUpdateCarAvailable(
     rentId:number, rentEnd: string, carId: number, eventAction: string,
   ): Promise<void> {
-    const query = `${eventAction} EVENT update_car_available${rentId} ON SCHEDULE AT '${rentEnd}' DO UPDATE happmobi.Cars SET rent_available = ${true} WHERE car_id = ${carId}`;
+    const query = `${eventAction} EVENT update_car_available${rentId} ON SCHEDULE AT '${rentEnd}' DO UPDATE heroku_c59813370649050.Cars SET rent_available = ${true} WHERE car_id = ${carId}`;
     await mysqlConnection.query(query);
   }
 
@@ -21,7 +21,7 @@ class RentsModel {
     carId: number, rentStart: string, rentEnd: string,
   ): Promise<number> {
     const [result] = await mysqlConnection.execute(
-      'SELECT cost_hour FROM happmobi.Cars WHERE car_id = ?',
+      'SELECT cost_hour FROM heroku_c59813370649050.Cars WHERE car_id = ?',
       [carId],
     );
     const { cost_hour: costHour } = result[0];
@@ -37,7 +37,7 @@ class RentsModel {
     await CarsModel.updateRentAvailable(carId, false);
     const total = await this.calculateTotal(carId, rentStart, rentEnd);
     const [{ insertId }] = await mysqlConnection.execute(
-      'INSERT INTO happmobi.Rents (car_id, user_id, rent_start, rent_end, total) VALUES (?,?,?,?,?)',
+      'INSERT INTO heroku_c59813370649050.Rents (car_id, user_id, rent_start, rent_end, total) VALUES (?,?,?,?,?)',
       [carId, userId, rentStart, rentEnd, total],
     );
     await this.createOrUpdateEventUpdateCarAvailable(insertId, rentEnd, carId, 'CREATE');
@@ -47,7 +47,7 @@ class RentsModel {
 
   async getAll(): Promise<Rent[]> {
     const [rents] = await mysqlConnection.execute(
-      'SELECT * FROM happmobi.Rents',
+      'SELECT * FROM heroku_c59813370649050.Rents',
     );
     return rents.map(({
       rent_id: rentId,
@@ -63,7 +63,7 @@ class RentsModel {
 
   async getById(id: number): Promise<Rent> {
     const [rent] = await mysqlConnection.execute(
-      'SELECT * FROM happmobi.Rents WHERE rent_id = ?', [id],
+      'SELECT * FROM heroku_c59813370649050.Rents WHERE rent_id = ?', [id],
     );
     if (!rent[0]) return null;
     return {
@@ -81,7 +81,7 @@ class RentsModel {
     await CarsModel.updateRentAvailable(rent.carId, true);
     await this.deleteEventUpdateCarAvailable(id);
     await mysqlConnection.execute(
-      'DELETE FROM happmobi.Rents WHERE rent_id = ?', [id],
+      'DELETE FROM heroku_c59813370649050.Rents WHERE rent_id = ?', [id],
     );
     return rent;
   }
@@ -103,7 +103,7 @@ class RentsModel {
       await CarsModel.updateRentAvailable(carId, false);
     }
     await mysqlConnection.execute(
-      'UPDATE happmobi.Rents SET car_id = ?, user_id = ?, rent_start = ?, rent_end = ?, total = ? WHERE rent_id = ?',
+      'UPDATE heroku_c59813370649050.Rents SET car_id = ?, user_id = ?, rent_start = ?, rent_end = ?, total = ? WHERE rent_id = ?',
       [carId, userId, rentStart, rentEnd, total, rentId],
     );
     const rent = await this.getById(rentId);

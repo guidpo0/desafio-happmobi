@@ -27,7 +27,7 @@ export class CarsAvailableComponent implements OnInit {
   }
 
   getAvailableCars() {
-    this.http.get<{ cars: Car[]}>('http://localhost:3000/cars').subscribe(
+    this.http.get<{ cars: Car[]}>('https://desafio-happmobi-db.herokuapp.com/cars').subscribe(
       (response) => {
         this.cars = response.cars.filter((car) => car.rentAvailable);
       },

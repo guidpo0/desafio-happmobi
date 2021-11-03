@@ -11,7 +11,7 @@ class UsersModel {
       addressId = await AddressModel.create({ street, city, zip });
     }
     const [{ insertId }] = await mysqlConnection.execute(
-      'INSERT INTO happmobi.Users (user_email, user_password, user_role, first_name, last_name, phone, address_id) VALUES (?,?,?,?,?,?,?)',
+      'INSERT INTO heroku_c59813370649050.Users (user_email, user_password, user_role, first_name, last_name, phone, address_id) VALUES (?,?,?,?,?,?,?)',
       [userEmail, userPassword, userRole, firstName, lastName, phone, addressId],
     );
     return {
@@ -30,7 +30,7 @@ class UsersModel {
 
   async getAll(): Promise<User[]> {
     const [users] = await mysqlConnection.execute(
-      'SELECT * FROM happmobi.Users AS Users INNER JOIN happmobi.Address AS Address ON Users.address_id = Address.address_id',
+      'SELECT * FROM heroku_c59813370649050.Users AS Users INNER JOIN heroku_c59813370649050.Address AS Address ON Users.address_id = Address.address_id',
     );
     return users.map(({
       user_id: userId,
@@ -49,7 +49,7 @@ class UsersModel {
 
   async getById(id: number): Promise<User | null> {
     const [user] = await mysqlConnection.execute(
-      'SELECT * FROM happmobi.Users AS Users INNER JOIN happmobi.Address AS Address ON Users.address_id = Address.address_id WHERE user_id = ?', [id],
+      'SELECT * FROM heroku_c59813370649050.Users AS Users INNER JOIN heroku_c59813370649050.Address AS Address ON Users.address_id = Address.address_id WHERE user_id = ?', [id],
     );
     if (!user[0]) return null;
     return {
@@ -68,7 +68,7 @@ class UsersModel {
   async remove(id: number): Promise<User> {
     const user = await this.getById(id);
     await mysqlConnection.execute(
-      'DELETE FROM happmobi.Users WHERE user_id = ?', [id],
+      'DELETE FROM heroku_c59813370649050.Users WHERE user_id = ?', [id],
     );
     return user;
   }
@@ -81,7 +81,7 @@ class UsersModel {
       addressId = await AddressModel.create({ street, city, zip });
     }
     await mysqlConnection.execute(
-      'UPDATE happmobi.Users SET user_email = ?, user_password = ?, user_role = ?, first_name = ?, last_name = ?, phone = ?, address_id = ? WHERE user_id = ?',
+      'UPDATE heroku_c59813370649050.Users SET user_email = ?, user_password = ?, user_role = ?, first_name = ?, last_name = ?, phone = ?, address_id = ? WHERE user_id = ?',
       [userEmail, userPassword, userRole, firstName, lastName, phone, addressId, userId],
     );
     const user = await this.getById(userId);
@@ -90,7 +90,7 @@ class UsersModel {
 
   async getByUserEmail(userEmail: string): Promise<User | null> {
     const [user] = await mysqlConnection.execute(
-      'SELECT * FROM happmobi.Users AS Users INNER JOIN happmobi.Address AS Address ON Users.address_id = Address.address_id WHERE user_email = ?',
+      'SELECT * FROM heroku_c59813370649050.Users AS Users INNER JOIN heroku_c59813370649050.Address AS Address ON Users.address_id = Address.address_id WHERE user_email = ?',
       [userEmail],
     );
     if (!user[0]) return null;

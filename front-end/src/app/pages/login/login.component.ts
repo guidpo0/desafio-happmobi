@@ -36,7 +36,10 @@ export class LoginComponent {
   }
     
   submitForm() {
-    this.http.post<{ token: string }>('http://localhost:3000/login', this.form.value).subscribe(
+    this.http.post<{ token: string }>(
+      'https://desafio-happmobi-db.herokuapp.com/login',
+      this.form.value,
+    ).subscribe(
       (response) => {
         localStorage.setItem('token', response.token);
         const { data: { userRole } }: { data: User } = jwtDecode(response.token);

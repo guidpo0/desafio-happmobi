@@ -114,6 +114,7 @@ table button:nth-of-type(1) {
   th, td {
     font-size: 12px !important;
   }
+  
   table button:nth-of-type(1) {
     margin-right: 0;
     margin-bottom: 10px;
