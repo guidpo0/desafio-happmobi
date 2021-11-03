@@ -62,7 +62,7 @@ export class SimulateComponent implements OnInit {
   }
 
   getCar() {
-    this.http.get<Car>(`https://desafio-happmobi-db.herokuapp.com/cars/${this.carId}`).subscribe(
+    this.http.get<Car>(`https://desafio-happmobi-backend.herokuapp.com/cars/${this.carId}`).subscribe(
       (response) => {
         this.car = response;
         if (!this.car.rentAvailable) this.router.navigate(['/cars-available']);
@@ -77,7 +77,7 @@ export class SimulateComponent implements OnInit {
       carId: this.carId,
     };
     this.http.post(
-      'https://desafio-happmobi-db.herokuapp.com/rents',
+      'https://desafio-happmobi-backend.herokuapp.com/rents',
       data,
       { headers: { Authorization: this.token } },
     ).subscribe(

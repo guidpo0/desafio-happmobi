@@ -37,10 +37,11 @@ export class LoginComponent {
     
   submitForm() {
     this.http.post<{ token: string }>(
-      'https://desafio-happmobi-db.herokuapp.com/login',
+      'https://desafio-happmobi-backend.herokuapp.com/login',
       this.form.value,
     ).subscribe(
       (response) => {
+        console.log(response)
         localStorage.setItem('token', response.token);
         const { data: { userRole } }: { data: User } = jwtDecode(response.token);
         if (userRole === 'admin') {

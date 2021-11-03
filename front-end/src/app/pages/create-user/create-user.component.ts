@@ -32,7 +32,7 @@ export class CreateUserComponent {
   submitForm() {
     const data: User = { ...this.form.value, userRole: 'user' };
     this.http.post<User>(
-      'https://desafio-happmobi-db.herokuapp.com/users',
+      'https://desafio-happmobi-backend.herokuapp.com/users',
       data,
     ).subscribe(
       (response) => {

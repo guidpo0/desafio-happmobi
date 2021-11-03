@@ -53,7 +53,7 @@ export class RentsComponent implements OnInit {
   }
 
   getUserRents() {
-    this.http.get<{ rents: Rent[]}>('https://desafio-happmobi-db.herokuapp.com/rents').subscribe(
+    this.http.get<{ rents: Rent[]}>('https://desafio-happmobi-backend.herokuapp.com/rents').subscribe(
       (response) => {
         this.rents = response.rents.filter((rent) => rent.userId === this.user.userId);
       },
@@ -62,7 +62,7 @@ export class RentsComponent implements OnInit {
   }
 
   getCars() {
-    this.http.get<{ cars: Car[]}>('https://desafio-happmobi-db.herokuapp.com/cars').subscribe(
+    this.http.get<{ cars: Car[]}>('https://desafio-happmobi-backend.herokuapp.com/cars').subscribe(
       (response) => {
         this.cars = response.cars;
       },

@@ -4,7 +4,8 @@
   "description": "Projeto desenvolvido para processo seletivo da Nimbus Meteorologia.",
   "main": "index.js",
   "scripts": {
-    "start": "sucrase-node src/server.ts",
+    "start": "npm run build && node dist/server.js",
+    "build": "sucrase ./src -d ./dist --transforms typescript,imports",
     "dev": "nodemon src/server.ts"
   },
   "keywords": [],

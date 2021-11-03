@@ -40,7 +40,7 @@ export class AdminComponent implements OnInit {
   }
 
   getCars() {
-    this.http.get<{ cars: Car[]}>('https://desafio-happmobi-db.herokuapp.com/cars').subscribe(
+    this.http.get<{ cars: Car[]}>('https://desafio-happmobi-backend.herokuapp.com/cars').subscribe(
       (response) => {
         this.cars = response.cars;
       },
@@ -52,7 +52,7 @@ export class AdminComponent implements OnInit {
     const data: Car = { ...this.form.value, rentAvailable: true };
     if (this.editing) {
       this.http.put<Car>(
-        `https://desafio-happmobi-db.herokuapp.com/cars/${this.editingCarId}`,
+        `https://desafio-happmobi-backend.herokuapp.com/cars/${this.editingCarId}`,
         data,
         { headers: { Authorization: this.token } },
       ).subscribe(
@@ -66,7 +66,7 @@ export class AdminComponent implements OnInit {
       );
     } else {
       this.http.post<Car>(
-        'https://desafio-happmobi-db.herokuapp.com/cars',
+        'https://desafio-happmobi-backend.herokuapp.com/cars',
         data,
         { headers: { Authorization: this.token } },
       ).subscribe(
@@ -89,7 +89,7 @@ export class AdminComponent implements OnInit {
 
   removeCar(id: number | undefined) {
     this.http.delete<Car>(
-      `https://desafio-happmobi-db.herokuapp.com/cars/${id}`,
+      `https://desafio-happmobi-backend.herokuapp.com/cars/${id}`,
       { headers: { Authorization: this.token } },
     ).subscribe(
       () => {
