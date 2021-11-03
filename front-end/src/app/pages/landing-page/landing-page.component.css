@@ -1,6 +1,6 @@
 .hero {
   background-image: url('../../../assets/hero-bg.jpg');
-  height: calc(100vh - 98px);
+  min-height: calc(100vh - 98px);
   background-size: cover;
   display: flex;
   align-items: center;
@@ -35,4 +35,19 @@
   background-color: rgba(114, 2, 2, 1);
   padding: 20px 15px;
   border-radius: 20px;
+}
+
+@media screen and (max-width: 768px) {
+  .hero {
+    background-image: url('../../../assets/hero-bg.jpg');
+    min-height: calc(100vh - 100px);
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero section {
+    width: 80vw;
+  }
 }
