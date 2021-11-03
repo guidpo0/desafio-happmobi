@@ -11,6 +11,7 @@ import { RentsComponent } from './pages/rents/rents.component';
 import { AuthGuardService } from './auth/auth-guard.service';
 import { RoleGuardService } from './auth/role-guard.service';
 import { LoggedInGuardService } from './auth/logged-in-guard.service';
+import { SimulateComponent } from './pages/simulate/simulate.component';
 
 const routes: Routes = [
   { path: '', component: LandingPageComponent },
@@ -37,6 +38,11 @@ const routes: Routes = [
   { 
     path: 'rents',
     component: RentsComponent,
+    canActivate: [AuthGuardService],
+  },
+  { 
+    path: 'simulate/:carId',
+    component: SimulateComponent,
     canActivate: [AuthGuardService],
   },
   { 

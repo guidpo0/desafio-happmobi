@@ -20,6 +20,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { SimulateComponent } from './pages/simulate/simulate.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { HttpClientModule } from '@angular/common/http';
     AdminComponent,
     RentsComponent,
     HeaderComponent,
-    NavbarComponent
+    NavbarComponent,
+    SimulateComponent
   ],
   imports: [
     BrowserModule,
