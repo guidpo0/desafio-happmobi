@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS heroku_c59813370649050.Users (
 );
 
 INSERT INTO heroku_c59813370649050.Users(user_email, user_password, user_role, first_name, last_name, phone, address_id) VALUES
-  ('claudio@teste.com', 'claudioteste', 'admin', 'Claudio', 'Teste', '11 99999-9999',
+  ('admin@teste.com', 'adminteste', 'admin', 'Claudio', 'Teste', '11 99999-9999',
   (SELECT address_id FROM heroku_c59813370649050.Address WHERE zip = '08090-284')),
   ('joana@teste.com', 'joanateste', 'user', 'Joana', 'Teste', '11 99999-9999',
   (SELECT address_id FROM heroku_c59813370649050.Address WHERE zip = '04849-529')),

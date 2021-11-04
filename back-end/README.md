@@ -131,6 +131,12 @@ Os campos da tabela `Cars` possuem esse formato:
 }
 ```
 
+#### *Observação
+
+O próprio banco de dados faz a alteração do valor rent_available na tabela Cars, ele faz isso por meio de criação de eventos. Caso banco de dados seja restaurado é importante que os eventos criados sejam excluidos para não haver conflito na criação de novos dados para a tabela Rents.
+
+Para listar os eventos no MySQL pode-se usar `SHOW EVENTS`, após listados é possível excluí-los pelo comando `DROP EVENT {nomeDoEvento}`.
+
 ## Desenvolvimento
 
 Neste projeto as seguintes stacks foram utilizadas no desenvolvimento:
